@@ -1,0 +1,58 @@
+:root {
+    --color-bg: #f8fafc;
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #e2e8f0;
+
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+    --color-text-hover: #334155;
+
+    --color-positive: #16a34a;
+    --color-positive-hover: #15803d;
+    --color-negative: #dc2626;
+    --color-negative-hover: #b91c1c;
+
+    --color-positive-text: #ffffff;
+    --color-negative-text: #ffffff;
+
+    --color-border: #cbd5e1;
+
+    --font-size-title: 1.75rem;
+    --font-size-subtitle: 1.25rem;
+    --font-size-description: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: #0f172a;
+        --color-bg-primary: #1e293b;
+        --color-bg-secondary: #334155;
+
+        --color-text: #e2e8f0;
+        --color-text-muted: #94a3b8;
+        --color-text-hover: #f8fafc;
+
+        --color-positive: #22c55e;
+        --color-positive-hover: #16a34a;
+        --color-negative: #ef4444;
+        --color-negative-hover: #dc2626;
+
+        --color-positive-text: #ffffff;
+        --color-negative-text: #ffffff;
+
+        --color-border: #475569;
+    }
+}
+
+body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--font-size-description);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+button {
+    font: inherit;
+    color: var(--color-text);
+}

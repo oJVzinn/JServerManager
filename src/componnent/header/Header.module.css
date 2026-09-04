@@ -1,0 +1,39 @@
+.Header {
+    width: 100vw;
+    height: 80px;
+}
+
+.title {
+    font-size: var(--font-size-title);
+    font-weight: bold;
+}
+
+.manu {
+    position: fixed;
+    background-color: var(--color-bg-secondary);
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 80px;
+    justify-content: space-around;
+}
+
+.itens {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+}
+
+.item {
+    display: inline-block;
+    color: var(--color-text);
+    transition: transform 0.2s ease;
+    text-decoration: none;
+}
+
+.item:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    color: var(--color-text-hover);
+}
+
