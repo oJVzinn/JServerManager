@@ -3,9 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && npm run build:electron && vite build",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "electron": "electron .",
+    "start": "npm run build && npm run electron",
     "lint": "oxlint",
     "preview": "vite preview"
   },

@@ -1,15 +1,9 @@
-import { ipcMain } from "electron";
-import { exec } from "node:child_process";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
 
-ipcMain.handle("java:version", async () => {
-    return new Promise((resolve, reject) => {
-        exec("java -version", (error, stdout, stderr) => {
-            if (error) {
-                reject(error);
-                return;
-            }
-
-            resolve(stderr || stdout);
-        });
-    });
-});
+createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+        <App />
+    </StrictMode>,
+);
