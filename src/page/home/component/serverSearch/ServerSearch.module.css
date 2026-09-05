@@ -1,0 +1,38 @@
+.ServerSearch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-secondary);
+    border-radius: 10px;
+    padding: 5px 15px;
+}
+
+.searchInput {
+    font-size: var(--font-size-subtitle);
+    padding: 0;
+    margin: 0;
+    color: var(--color-text);
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+.searchButton {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchButton:hover {
+    cursor: pointer;
+}
+
+.searchIcon {
+    height: 25px;
+    width: 25px;
+}

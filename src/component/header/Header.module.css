@@ -13,9 +13,11 @@
     background-color: var(--color-bg-secondary);
     display: flex;
     align-items: center;
-    width: 100vw;
+    width: calc(100vw - 10%);
     height: 80px;
-    justify-content: space-around;
+    justify-content: space-between;
+    border-radius: 0 0 15px 15px;
+    padding-inline: 5%;
 }
 
 .itens {
@@ -27,13 +29,14 @@
 .item {
     display: inline-block;
     color: var(--color-text);
-    transition: transform 0.2s ease;
+    transition: 0.2s ease;
     text-decoration: none;
+    font-size: var(--font-size-subtitle);
 }
 
 .item:hover {
     cursor: pointer;
-    transform: scale(1.1);
+    transform: scale(1.05);
     color: var(--color-text-hover);
 }
 

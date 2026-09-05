@@ -1,0 +1,44 @@
+.ServerList {
+    width: calc(100vw - 10%);
+    padding-inline: 5%;
+    margin-block: 40px;
+}
+
+.serverTable {
+    background-color: var(--color-bg-secondary);
+    width: 100%;
+    padding: 15px 10px;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-radius: 10px;
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+.tableCell {
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.checkboxCell {
+    width: 10%;
+}
+
+.idCell {
+    width: 1%;
+    text-align: center;
+}
+
+.checkboxColumn {
+    width: 10%;
+}
+
+.buttonCell {
+    width: 45px;
+    height: 25px;
+}
+
+.buttonIcon {
+    width: 25px;
+    height: 25px;
+}
