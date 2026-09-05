@@ -1,5 +1,5 @@
 .Banner {
-    width: calc(100vw - 10%);
+    width: calc(100% - 10%);
     padding-inline: 5%;
     display: flex;
     margin-block: 40px;

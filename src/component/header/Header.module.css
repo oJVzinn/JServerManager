@@ -1,5 +1,5 @@
 .Header {
-    width: 100vw;
+    width: 100%;
     height: 80px;
 }
 
@@ -13,7 +13,7 @@
     background-color: var(--color-bg-secondary);
     display: flex;
     align-items: center;
-    width: calc(100vw - 10%);
+    width: calc(100% - 10%);
     height: 80px;
     justify-content: space-between;
     border-radius: 0 0 15px 15px;
@@ -39,4 +39,3 @@
     transform: scale(1.05);
     color: var(--color-text-hover);
 }
-
