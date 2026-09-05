@@ -1,11 +1,12 @@
 import styles from "./ServerList.module.css"
+import ServerListInfo from "../serverListInfo";
 
 export default function ServerList() {
     return (
         <div className={styles.ServerList}>
             <table className={styles.serverTable}>
                 <colgroup>
-                    <col className={styles.checkboxColumn}/>
+                    <col className={`{styles.checkboxColumn}`}/>
                     <col className={styles.idColumn}/>
                     <col/>
                     <col/>
@@ -14,32 +15,48 @@ export default function ServerList() {
                     <col className={styles.buttonColumn}/>
                 </colgroup>
                 <thead>
-                <tr className={styles.tableRow}>
-                    <th className={`${styles.tableCell} ${styles.checkboxCell}`} scope="col"><input type={"checkbox"}/></th>
-                    <th className={`${styles.tableCell} ${styles.idCell}`} scope="col">ID</th>
-                    <th className={styles.tableCell} scope="col">NOME</th>
-                    <th className={styles.tableCell} scope="col">TIPO</th>
-                    <th className={styles.tableCell} scope="col">STATUS</th>
-                    <th className={styles.buttonCell} scope="col" aria-label="Editar" />
-                    <th className={styles.buttonCell} scope="col" aria-label="Excluir" />
+                <tr>
+                    <th><input type={"checkbox"}/></th>
+                    <th className={styles.columnTitle}>ID</th>
+                    <th className={`${styles.columnTitle}`}>NOME</th>
+                    <th className={`${styles.columnTitle}`}>TIPO</th>
+                    <th className={`${styles.columnTitle}`}>STATUS</th>
+                    <th aria-label="Editar"/>
+                    <th aria-label="Excluir"/>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr className={styles.tableRow}>
-                    <td className={`${styles.tableCell} ${styles.checkboxCell}`}><input type={"checkbox"}/></td>
-                    <td className={`${styles.tableCell} ${styles.idCell}`}>1</td>
-                    <td className={styles.tableCell}>Proxy</td>
-                    <td className={styles.tableCell}>PROXY</td>
-                    <td className={styles.tableCell}>LIGADO</td>
-                    <td className={styles.buttonCell}><img className={styles.buttonIcon} alt="Editar servidor" src="/assets/edit.svg"/></td>
-                    <td className={styles.buttonCell}><img className={styles.buttonIcon} alt="Excluir servidor" src="/assets/delete.svg"/></td>
-                </tr>
+                <ServerListInfo position={1} id={1} name={"Proxy 01"} type={"PROXY"} status={"RUNNING"}/>
+                <ServerListInfo position={2} id={1} name={"Lobby 01"} type={"BUKKIT"} status={"RUNNING"}/>
+                <ServerListInfo position={3} id={1} name={"Lobby 02"} type={"BUKKIT"} status={"STOPPED"}/>
+                <ServerListInfo position={4} id={1} name={"BedWars Lobby 01"} type={"BUKKIT"} status={"RUNNING"}/>
+                <ServerListInfo position={5} id={1} name={"BedWars Lobby 02"} type={"BUKKIT"} status={"STOPPED"}/>
+                <ServerListInfo position={6} id={1} name={"BedWars Solo 01"} type={"BUKKIT"} status={"RUNNING"}/>
+                <ServerListInfo position={7} id={1} name={"BedWars Solo 02"} type={"BUKKIT"} status={"STOPPED"}/>
+                <ServerListInfo position={8} id={1} name={"BedWars Solo 03"} type={"BUKKIT"} status={"STOPPED"}/>
+                <ServerListInfo position={9} id={1} name={"BedWars Duplas 01"} type={"BUKKIT"} status={"RUNNING"}/>
+                <ServerListInfo position={10} id={1} name={"BedWars Duplas 02"} type={"BUKKIT"} status={"STOPPED"}/>
+                <ServerListInfo position={11} id={1} name={"BedWars Duplas 03"} type={"BUKKIT"} status={"STOPPED"}/>
                 </tbody>
 
                 <tfoot>
-                <tr className={styles.tableRow}>
-                    <td className={styles.tableCell} colSpan={7}>1 2 3 ...</td>
+                <tr>
+                    <td colSpan={7}>
+                        <div className={styles.footerPagination} >
+                            <button className={styles.buttonPagination}>
+                                <img src="/assets/arrowBack.svg" alt="backImg" className={styles.paginationImg}/>
+                            </button>
+                            <ul className={styles.paginationList}>
+                                <li>
+                                    <button className={styles.buttonPagination}>1</button>
+                                </li>
+                            </ul>
+                            <button className={styles.buttonPagination}>
+                                <img src="/assets/arrowForward.svg" alt="forwardImg" className={styles.paginationImg}/>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
                 </tfoot>
             </table>

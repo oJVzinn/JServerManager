@@ -7,7 +7,7 @@
 .serverTable {
     background-color: var(--color-bg-secondary);
     width: 100%;
-    padding: 15px 10px;
+    padding: 0 10px;
     table-layout: fixed;
     border-collapse: separate;
     border-radius: 10px;
@@ -15,30 +15,65 @@
     overflow: hidden;
 }
 
+.checkboxColumn {
+    width: 10%;
+}
+
+.idColumn {
+    width: 5%;
+}
+
+.buttonColumn {
+    width: 50px;
+}
+
 .tableCell {
     padding: 15px 10px;
     text-align: center;
 }
 
-.checkboxCell {
-    width: 10%;
+.columnTitle {
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
+    color: var(--color-text);
+    padding: 15px 0;
 }
 
-.idCell {
-    width: 1%;
-    text-align: center;
+.footerPagination {
+    display: flex;
+    padding: 15px;
+    justify-content: center;
+    gap: 15px;
 }
 
-.checkboxColumn {
-    width: 10%;
+.buttonPagination {
+    background-color: var(--color-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    margin: 0;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
 }
 
-.buttonCell {
-    width: 45px;
-    height: 25px;
-}
-
-.buttonIcon {
+.paginationImg {
     width: 25px;
     height: 25px;
+}
+
+.paginationList {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.buttonPagination:hover {
+    cursor: pointer;
 }
