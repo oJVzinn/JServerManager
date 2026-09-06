@@ -23,4 +23,5 @@
 .ServerCreator:hover {
     transform: scale(1.05);
     cursor: pointer;
+    background-color: var(--color-positive-hover);
 }

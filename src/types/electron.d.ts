@@ -12,6 +12,11 @@ declare global {
             ) => Promise<ServerEntity[]>;
 
             countServers: (keyWord: string) => Promise<number>
+
+            selectFolder: () => Promise<{
+                name: string;
+                path: string;
+            } | null>
         };
     }
 }
