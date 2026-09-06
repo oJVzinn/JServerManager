@@ -72,8 +72,19 @@
     align-items: center;
     padding: 0;
     margin: 0;
+    gap: 10px;
 }
 
 .buttonPagination:hover {
     cursor: pointer;
+}
+
+.activePage {
+    background-color: var(--color-positive);
+    color: var(--color-positive-text);
+    cursor: default;
+}
+
+.activePage:hover {
+    cursor: default;
 }

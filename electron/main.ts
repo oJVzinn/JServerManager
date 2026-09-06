@@ -1,6 +1,8 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { init } from "./database/database.js";
+import ipcHandler from "./ipc/ipcHandler.js"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,7 +21,8 @@ function createWindow() {
     window.loadFile(path.join(__dirname, "../dist/index.html"));
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+    await init();
     createWindow();
 
     app.on("activate", () => {
@@ -30,3 +33,5 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") app.quit();
 })
+
+ipcHandler()

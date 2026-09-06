@@ -1,7 +1,39 @@
 import styles from "./ServerList.module.css"
 import ServerListInfo from "../serverListInfo";
+import {useEffect, useState} from "react";
+import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 
 export default function ServerList() {
+    const pageSize = 11;
+    const [server, setServers] = useState<Array<ServerEntity> | null>(null)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [totalServers, setTotalServer] = useState<number>(0)
+    const totalPages = Math.max(1, Math.ceil(totalServers / pageSize));
+    const paginationStart = Math.floor((currentPage - 1) / 3) * 3 + 1;
+    const paginationEnd = Math.min(paginationStart + 2, totalPages);
+
+    useEffect(() => {
+        setServers(null);
+
+        Promise.all([
+            window.electronAPI.countServers(),
+            window.electronAPI.listServers(pageSize, currentPage),
+        ]).then(([total, servers]) => {
+            setTotalServer(total);
+            setServers(servers);
+        });
+    }, [currentPage])
+
+    function updateToPreviousPage() {
+        if (currentPage <= 1) return
+        setCurrentPage(currentPage - 1)
+    }
+
+    function updateToNextPage() {
+        if (currentPage >= totalPages) return
+        setCurrentPage(currentPage + 1)
+    }
+
     return (
         <div className={styles.ServerList}>
             <table className={styles.serverTable}>
@@ -29,34 +61,61 @@ export default function ServerList() {
                 </thead>
 
                 <tbody>
-                <ServerListInfo position={1} id={1} name={"Proxy 01"} type={"PROXY"} status={"RUNNING"} port={25565}/>
-                <ServerListInfo position={2} id={1} name={"Lobby 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
-                <ServerListInfo position={3} id={1} name={"Lobby 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
-                <ServerListInfo position={4} id={1} name={"BedWars Lobby 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
-                <ServerListInfo position={5} id={1} name={"BedWars Lobby 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
-                <ServerListInfo position={6} id={1} name={"BedWars Solo 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
-                <ServerListInfo position={7} id={1} name={"BedWars Solo 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
-                <ServerListInfo position={8} id={1} name={"BedWars Solo 03"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
-                <ServerListInfo position={9} id={1} name={"BedWars Duplas 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
-                <ServerListInfo position={10} id={1} name={"BedWars Duplas 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
-                <ServerListInfo position={11} id={1} name={"BedWars Duplas 03"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
+                {
+                    server === null ?
+                        <tr>
+                            <td colSpan={8}>Carregando...</td>
+                        </tr> :
+                        server.length === 0 ?
+                            <tr>
+                                <td colSpan={8}>Nenhum item encontrado...</td>
+                            </tr> :
+                            server.map((value, index) => {
+                                return <ServerListInfo id={value.id} name={value.name} type={value.type}
+                                                       port={value.port}
+                                                       status={value.offlineMode ? "OFFLINE" : "ONLINE"}
+                                                       position={index} key={value.id}/>
+                            })
+                }
                 </tbody>
 
                 <tfoot>
                 <tr>
-                    <td colSpan={7}>
-                        <div className={styles.footerPagination} >
-                            <button className={styles.buttonPagination}>
-                                <img src="/assets/arrowBack.svg" alt="backImg" className={styles.paginationImg}/>
-                            </button>
+                    <td colSpan={8}>
+                        <div className={styles.footerPagination}>
+                            {
+                                currentPage !== 1 &&
+                                <button className={styles.buttonPagination} onClick={() => updateToPreviousPage()}>
+                                    <img src="./assets/arrowBack.svg" alt="backImg" className={styles.paginationImg}/>
+                                </button>
+                            }
+
                             <ul className={styles.paginationList}>
-                                <li>
-                                    <button className={styles.buttonPagination}>1</button>
-                                </li>
+                                {
+                                    Array.from(
+                                        {length: paginationEnd - paginationStart + 1},
+                                        (_, index) => paginationStart + index,
+                                    ).map((page) => (
+                                        <li key={page}>
+                                            <button
+                                                className={`${styles.buttonPagination} ${page === currentPage ? styles.activePage : ""}`}
+                                                onClick={() => setCurrentPage(page)}
+                                                disabled={page === currentPage}
+                                            >
+                                                {page}
+                                            </button>
+                                        </li>
+                                    ))
+                                }
                             </ul>
-                            <button className={styles.buttonPagination}>
-                                <img src="/assets/arrowForward.svg" alt="forwardImg" className={styles.paginationImg}/>
-                            </button>
+
+                            {
+                                currentPage !== totalPages &&
+                                <button className={styles.buttonPagination} onClick={() => updateToNextPage()}>
+                                    <img src="./assets/arrowForward.svg" alt="forwardImg"
+                                         className={styles.paginationImg}/>
+                                </button>
+                            }
                         </div>
                     </td>
                 </tr>

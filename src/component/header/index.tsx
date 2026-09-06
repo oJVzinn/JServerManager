@@ -18,6 +18,10 @@ export default function Header() {
                     <li>
                         <Link to="/" className={styles.item}><span>Documentação</span></Link>
                     </li>
+
+                    <li>
+                        <Link to="/" className={styles.item}><span>Ajustes</span></Link>
+                    </li>
                 </ul>
             </nav>
         </header>
