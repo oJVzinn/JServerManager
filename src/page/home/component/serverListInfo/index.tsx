@@ -6,17 +6,19 @@ type props = {
     name: string
     type: string
     status: string
+    port: number
 }
 
-export default function ServerListInfo( {position, id, name, type, status}: props ) {
+export default function ServerListInfo( {position, id, name, type, status, port}: props ) {
     return <tr className={(position % 2 == 0 ? styles.tableBackgroundSecondary : styles.tableBackgroundPrimary) }>
-        <td className={`${styles.tableCell} ${styles.checkboxCell}`}>
+        <td className={`${styles.tableCell}`}>
             <input type={"checkbox"}/>
         </td>
-        <td className={`${styles.tableCell} ${styles.idCell} ${styles.columDesc}`}>{id}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{id}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{name}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{type}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{status}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{port}</td>
         <td className={styles.buttonCell}>
             <button className={styles.actionButton}><img className={styles.buttonIcon} alt="Editar servidor" src="/assets/edit.svg"/></button>
         </td>

@@ -6,8 +6,9 @@ export default function ServerList() {
         <div className={styles.ServerList}>
             <table className={styles.serverTable}>
                 <colgroup>
-                    <col className={`{styles.checkboxColumn}`}/>
+                    <col className={styles.checkboxColumn}/>
                     <col className={styles.idColumn}/>
+                    <col/>
                     <col/>
                     <col/>
                     <col/>
@@ -21,23 +22,24 @@ export default function ServerList() {
                     <th className={`${styles.columnTitle}`}>NOME</th>
                     <th className={`${styles.columnTitle}`}>TIPO</th>
                     <th className={`${styles.columnTitle}`}>STATUS</th>
+                    <th className={`${styles.columnTitle}`}>PORTA</th>
                     <th aria-label="Editar"/>
                     <th aria-label="Excluir"/>
                 </tr>
                 </thead>
 
                 <tbody>
-                <ServerListInfo position={1} id={1} name={"Proxy 01"} type={"PROXY"} status={"RUNNING"}/>
-                <ServerListInfo position={2} id={1} name={"Lobby 01"} type={"BUKKIT"} status={"RUNNING"}/>
-                <ServerListInfo position={3} id={1} name={"Lobby 02"} type={"BUKKIT"} status={"STOPPED"}/>
-                <ServerListInfo position={4} id={1} name={"BedWars Lobby 01"} type={"BUKKIT"} status={"RUNNING"}/>
-                <ServerListInfo position={5} id={1} name={"BedWars Lobby 02"} type={"BUKKIT"} status={"STOPPED"}/>
-                <ServerListInfo position={6} id={1} name={"BedWars Solo 01"} type={"BUKKIT"} status={"RUNNING"}/>
-                <ServerListInfo position={7} id={1} name={"BedWars Solo 02"} type={"BUKKIT"} status={"STOPPED"}/>
-                <ServerListInfo position={8} id={1} name={"BedWars Solo 03"} type={"BUKKIT"} status={"STOPPED"}/>
-                <ServerListInfo position={9} id={1} name={"BedWars Duplas 01"} type={"BUKKIT"} status={"RUNNING"}/>
-                <ServerListInfo position={10} id={1} name={"BedWars Duplas 02"} type={"BUKKIT"} status={"STOPPED"}/>
-                <ServerListInfo position={11} id={1} name={"BedWars Duplas 03"} type={"BUKKIT"} status={"STOPPED"}/>
+                <ServerListInfo position={1} id={1} name={"Proxy 01"} type={"PROXY"} status={"RUNNING"} port={25565}/>
+                <ServerListInfo position={2} id={1} name={"Lobby 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
+                <ServerListInfo position={3} id={1} name={"Lobby 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
+                <ServerListInfo position={4} id={1} name={"BedWars Lobby 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
+                <ServerListInfo position={5} id={1} name={"BedWars Lobby 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
+                <ServerListInfo position={6} id={1} name={"BedWars Solo 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
+                <ServerListInfo position={7} id={1} name={"BedWars Solo 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
+                <ServerListInfo position={8} id={1} name={"BedWars Solo 03"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
+                <ServerListInfo position={9} id={1} name={"BedWars Duplas 01"} type={"BUKKIT"} status={"RUNNING"} port={25565}/>
+                <ServerListInfo position={10} id={1} name={"BedWars Duplas 02"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
+                <ServerListInfo position={11} id={1} name={"BedWars Duplas 03"} type={"BUKKIT"} status={"STOPPED"} port={25565}/>
                 </tbody>
 
                 <tfoot>
