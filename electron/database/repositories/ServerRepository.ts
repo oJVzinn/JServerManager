@@ -19,15 +19,23 @@ export async function createTable(db: sqlite3.Database) {
   `);
 }
 
-export function list(db: sqlite3.Database, maxServers: number, page: number): Promise<Array<ServerEntity>> {
+export function list(db: sqlite3.Database, maxServers: number, page: number, keyWord: string): Promise<Array<ServerEntity>> {
     const limit = Math.max(1, Math.floor(maxServers));
     const currentPage = Math.max(1, Math.floor(page));
     const offset = (currentPage - 1) * limit;
+    const search = keyWord.trim();
+    const query = search === ""
+        ? "SELECT * FROM servers ORDER BY id LIMIT ? OFFSET ?"
+        : "SELECT * FROM servers WHERE name LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+
+    const parameters = search === ""
+        ? [limit, offset]
+        : [`%${search}%`, limit, offset];
 
     return new Promise((resolve, reject) => {
         db.all(
-            "SELECT * FROM servers ORDER BY id LIMIT ? OFFSET ?",
-            [limit, offset],
+            query,
+            parameters,
             (err, rows) => {
                 if (err) {
                     reject(err);
@@ -44,10 +52,17 @@ export function list(db: sqlite3.Database, maxServers: number, page: number): Pr
     });
 }
 
-export function countTotal(db: sqlite3.Database): Promise<number> {
+export function countTotal(db: sqlite3.Database, keyWord: string): Promise<number> {
+    const search = keyWord.trim();
+    const query = search === ""
+        ? "SELECT COUNT(id) AS total FROM servers"
+        : "SELECT COUNT(id) AS total FROM servers WHERE name LIKE ?";
+    const parameters = search === "" ? [] : [`%${search}%`];
+
     return new Promise((resolve, reject) => {
         db.get(
-            "SELECT COUNT(id) AS total FROM servers",
+            query,
+            parameters,
             (err, row: { total: number }) => {
                 if (err) {
                     reject(err);

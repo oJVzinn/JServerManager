@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electronAPI", {
-    listServers: (maxServers: number, page: number)=> ipcRenderer.invoke("server:list", { maxServers, page }),
-    countServers: ()=> ipcRenderer.invoke("server:count")
+    listServers: (maxServers: number, page: number, keyWord: string) =>
+        ipcRenderer.invoke("server:list", { maxServers, page, keyWord }),
+    countServers: (keyWord: string) => ipcRenderer.invoke("server:count", keyWord)
 });

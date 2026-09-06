@@ -3,7 +3,11 @@ import ServerListInfo from "../serverListInfo";
 import {useEffect, useState} from "react";
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 
-export default function ServerList() {
+type Props = {
+    keyWord: string
+}
+
+export default function ServerList( {keyWord}: Props ) {
     const pageSize = 11;
     const [server, setServers] = useState<Array<ServerEntity> | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -16,13 +20,13 @@ export default function ServerList() {
         setServers(null);
 
         Promise.all([
-            window.electronAPI.countServers(),
-            window.electronAPI.listServers(pageSize, currentPage),
+            window.electronAPI.countServers(keyWord),
+            window.electronAPI.listServers(pageSize, currentPage, keyWord),
         ]).then(([total, servers]) => {
             setTotalServer(total);
             setServers(servers);
         });
-    }, [currentPage])
+    }, [currentPage, keyWord])
 
     function updateToPreviousPage() {
         if (currentPage <= 1) return

@@ -7,11 +7,11 @@ declare global {
         electronAPI: {
             listServers: (
                 maxServers: number,
-                page: number
+                page: number,
+                keyWord: string
             ) => Promise<ServerEntity[]>;
 
-            countServers: () => Promise<number>
+            countServers: (keyWord: string) => Promise<number>
         };
     }
 }
-

@@ -1,13 +1,15 @@
 import Header from "../../component/header";
 import Banner from "./component/banner";
 import ServerList from "./component/serverList";
+import {useState} from "react";
 
 export default function Home() {
+    const [keyWord, setKetWord] = useState<string>("")
     return (
         <>
             <Header/>
-            <Banner/>
-            <ServerList/>
+            <Banner setKeyWord={setKetWord} keyWord={keyWord}/>
+            <ServerList keyWord={keyWord}/>
         </>
     )
 }
