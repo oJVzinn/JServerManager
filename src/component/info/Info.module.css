@@ -1,0 +1,50 @@
+.Info {
+    position: fixed;
+    display: flex;
+    top: 20px;
+    right: 20px;
+    align-items: center;
+    padding: 15px 10px;
+    border-radius: 10px;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.infoPositive {
+    background-color: var(--color-positive);
+}
+
+.infoNegative {
+    background-color: var(--color-negative);
+}
+
+.infoWarning {
+    background-color: var(--color-warning);
+}
+
+.infoImg {
+    height: 45px;
+    width: 45px;
+}
+
+.infos {
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    width: 80%;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.infoTitle {
+    font-weight: bold;
+    color: var(--color-text);
+    font-size: var(--font-size-subtitle);
+}
+
+.infoDesc {
+    color: var(--color-text);
+    font-size: var(--font-size-description);
+}

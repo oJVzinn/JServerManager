@@ -11,9 +11,12 @@
     --color-positive-hover: #15803d;
     --color-negative: #dc2626;
     --color-negative-hover: #b91c1c;
+    --color-warning: #d97706;
+    --color-warning-hover: #b45309;
 
     --color-positive-text: #ffffff;
     --color-negative-text: #ffffff;
+    --color-warning-text: #422006;
 
     --color-border: #cbd5e1;
 
@@ -36,9 +39,12 @@
         --color-positive-hover: #16a34a;
         --color-negative: #ef4444;
         --color-negative-hover: #dc2626;
+        --color-warning: #fbbf24;
+        --color-warning-hover: #f59e0b;
 
         --color-positive-text: #ffffff;
         --color-negative-text: #ffffff;
+        --color-warning-text: #422006;
 
         --color-border: #475569;
     }

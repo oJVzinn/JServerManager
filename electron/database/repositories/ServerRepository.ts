@@ -12,8 +12,8 @@ export async function createTable(db: sqlite3.Database) {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         path TEXT NOT NULL,
-        type TEXT NOT NULL DEFAULT ('BUKKIT'),
-        port INT NOT NULL DEFAULT (25565),
+        type TEXT NOT NULL,
+        port INT NOT NULL UNIQUE DEFAULT (25565),
         offlineMode BOOLEAN NOT NULL DEFAULT (TRUE)
     )
   `);

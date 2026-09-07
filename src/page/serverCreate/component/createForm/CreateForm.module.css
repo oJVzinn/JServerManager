@@ -15,11 +15,75 @@
     gap: 15px;
     padding: 15px 10px;
     border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .title {
     font-size: var(--font-size-title);
     color: var(--color-text);
+    font-weight: bold;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: start;
+}
+
+.titleField {
+    font-size: var(--font-size-subtitle);
+    color: var(--color-text);
+    font-weight: bold;
+}
+
+.inputField {
+    background: var(--color-bg-primary);
+    color: var(--color-text);
+    padding: 15px 10px;
+    outline: none;
+    border: none;
+    font-size: var(--font-size-description);
+    border-radius: 10px;
+}
+
+.inputField:focus {
+    border: 2px solid var(--color-text);
+    outline: none;
+    box-shadow: none;
+}
+
+.checkbox {
+    appearance: none;
+    align-self: flex-start;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background: var(--color-bg-primary);
+    cursor: pointer;
+}
+
+.checkbox:hover {
+    transform: scale(1.15);
+    transition: 0.2s ease;
+}
+
+.checkbox:checked:hover {
+    background-color: var(--color-positive-hover);
+}
+
+.checkbox:checked {
+    background: var(--color-positive);
+}
+
+.checkbox:checked::after {
+    content: "✓";
+    display: block;
+    color: var(--color-text);
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
     font-weight: bold;
 }
 
@@ -39,6 +103,39 @@
     transition: 0.2s ease;
     color: var(--color-text);
     font-weight: bold;
+}
+
+.selectPathButton {
+    background: var(--color-bg-primary);
+    color: var(--color-text);
+    padding: 10px 15px;
+    font-size: var(--font-size-description);
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+}
+
+.selectPathButton:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.selectPath {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pathInfo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.pathSelectName {
+    font-size: var(--font-size-description);
 }
 
 .finishCreation {
