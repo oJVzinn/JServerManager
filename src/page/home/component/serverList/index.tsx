@@ -15,6 +15,7 @@ export default function ServerList({keyWord, setLoading}: Props) {
     const [server, setServers] = useState<Array<ServerEntity> | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [totalServers, setTotalServer] = useState<number>(0)
+    const [allSelect, setAllSelect] = useState<boolean>(false)
 
     useEffect(() => {
         setLoading(true);
@@ -48,7 +49,7 @@ export default function ServerList({keyWord, setLoading}: Props) {
                     <col className={styles.buttonColumn}/>
                 </colgroup>
 
-                <ServerListHeader/>
+                <ServerListHeader allSelect={allSelect} setAllSelect={setAllSelect}/>
 
                 <tbody>
                 {
@@ -57,10 +58,13 @@ export default function ServerList({keyWord, setLoading}: Props) {
                             <td colSpan={8}>Nenhum item encontrado...</td>
                         </tr> :
                         server.map((value, index) => {
-                            return <ServerListInfo id={value.id} name={value.name} type={value.type}
-                                                   port={value.port}
-                                                   status={value.offlineMode ? "OFFLINE" : "ONLINE"}
-                                                   position={index} key={value.id}/>
+                            const finalServerItem = {
+                                ...value,
+                                position: index,
+                                selected: allSelect
+                            }
+
+                            return <ServerListInfo serverItemList={finalServerItem} key={index}/>
                         }))
                 }
                 </tbody>

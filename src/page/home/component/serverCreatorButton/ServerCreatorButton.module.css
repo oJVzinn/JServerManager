@@ -1,4 +1,4 @@
-.ServerCreator {
+.ServerCreatorButton {
     background-color: var(--color-positive);
     display: flex;
     outline: none;
@@ -20,7 +20,7 @@
     font-weight: bold;
 }
 
-.ServerCreator:hover {
+.ServerCreatorButton:hover {
     transform: scale(1.05);
     cursor: pointer;
     background-color: var(--color-positive-hover);

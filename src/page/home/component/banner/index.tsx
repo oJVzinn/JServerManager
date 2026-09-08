@@ -1,5 +1,5 @@
 import styles from "./Banner.module.css"
-import ServerCreator from "../serverCreator";
+import ServerCreatorButton from "../serverCreatorButton";
 import ServerSearch from "../serverSearch";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export default function Banner( {keyWord, setKeyWord}: Props ) {
     return (
         <div className={styles.Banner}>
-            <ServerCreator/>
+            <ServerCreatorButton/>
             <ServerSearch keyWord={keyWord} setKeyWord={setKeyWord}/>
         </div>
     )

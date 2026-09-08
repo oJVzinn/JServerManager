@@ -1,10 +1,18 @@
 import styles from "./ServerListHeader.module.css";
 
-export default function ServerListHeader() {
+type Props = {
+    allSelect: boolean
+    setAllSelect: (allSelect: boolean) => void
+}
+
+export default function ServerListHeader( {allSelect, setAllSelect}: Props) {
     return (
         <thead>
         <tr>
-            <th><input type={"checkbox"} className={styles.checkbox}/></th>
+            <th><input type={"checkbox"} className={styles.checkbox} checked={allSelect} onChange={(event) => {
+                const checked = event.currentTarget.checked
+                setAllSelect(checked)
+            }}/></th>
             <th className={styles.columnTitle}>ID</th>
             <th className={`${styles.columnTitle}`}>NOME</th>
             <th className={`${styles.columnTitle}`}>TIPO</th>
