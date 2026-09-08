@@ -148,3 +148,17 @@ export function findByPath(db: sqlite3.Database, path: string): Promise<ServerEn
         );
     });
 }
+
+export function deleteByID(db: sqlite3.Database, id: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(
+            "DELETE FROM servers WHERE id = ?",
+            [id],
+            (err) => {
+                if (err)
+                    throw new Error(`Erro do deleter o servidor de ID ${id}`, err)
+
+            }
+        );
+    });
+}

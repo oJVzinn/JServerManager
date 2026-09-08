@@ -14,6 +14,10 @@ type props = {
 export default function ServerListItem( {serverItemList}: props ) {
     const [serverItem, setServerItem] = useState<ServerItemList>(serverItemList)
 
+    async function processDeleteServer() {
+
+    }
+
     useEffect(() => {
         setServerItem((current)=> ({
             ...current,
