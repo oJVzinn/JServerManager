@@ -1,0 +1,39 @@
+.columnTitle {
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
+    color: var(--color-text);
+    padding: 15px 0;
+}
+
+.checkbox {
+    appearance: none;
+    align-self: flex-start;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background: var(--color-bg-primary);
+    cursor: pointer;
+}
+
+.checkbox:hover {
+    transform: scale(1.15);
+    transition: 0.2s ease;
+}
+
+.checkbox:checked:hover {
+    background-color: var(--color-positive-hover);
+}
+
+.checkbox:checked {
+    background: var(--color-positive);
+}
+
+.checkbox:checked::after {
+    content: "✓";
+    display: block;
+    color: var(--color-text);
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    font-weight: bold;
+}

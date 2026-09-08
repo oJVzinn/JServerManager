@@ -1,4 +1,4 @@
-import styles from "./ServerListInfo.module.css"
+import styles from "./ServerListItem.module.css"
 
 type props = {
     position: number
@@ -9,10 +9,10 @@ type props = {
     port: number
 }
 
-export default function ServerListInfo( {position, id, name, type, status, port}: props ) {
+export default function ServerListItem( {position, id, name, type, status, port}: props ) {
     return <tr className={(position % 2 == 0 ? styles.tableBackgroundPrimary : styles.tableBackgroundSecondary) }>
         <td className={`${styles.tableCell}`}>
-            <input type={"checkbox"}/>
+            <input type={"checkbox"} className={styles.checkbox}/>
         </td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{id}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{name}</td>
