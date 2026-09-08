@@ -1,22 +1,47 @@
 import sqlite3 from "sqlite3";
-import { ServerEntity } from "../entity/ServerEntity.js";
+import { ServerEntity } from "../../entity/ServerEntity.js";
 
-type ServerRow = Omit<ServerEntity, "offlineMode"> & {
+type ServerRow = Omit<ServerEntity, "offlineMode" | "stats"> & {
     offlineMode: number;
 };
 
-export async function createTable(db: sqlite3.Database) {
-    db.run(`
-    CREATE TABLE IF NOT EXISTS servers
-    (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        path TEXT NOT NULL,
-        type TEXT NOT NULL,
-        port INT NOT NULL UNIQUE DEFAULT (25565),
-        offlineMode BOOLEAN NOT NULL DEFAULT (TRUE)
-    )
-  `);
+export function createServerTable(db: sqlite3.Database): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`
+        CREATE TABLE IF NOT EXISTS servers
+        (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            path TEXT NOT NULL,
+            type TEXT NOT NULL,
+            port INT NOT NULL UNIQUE DEFAULT (25565),
+            offlineMode BOOLEAN NOT NULL DEFAULT (TRUE)
+        )
+      `, (err) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            resolve();
+        });
+    });
+}
+
+export async function createServer(db: sqlite3.Database, server: ServerEntity) {
+    await new Promise<void>((resolve, reject) => {
+        db.run("INSERT INTO servers(name, path, type, port, offlineMode) VALUES (?, ?, ?, ?, ?)",
+            [server.name, server.path, server.type, server.port, server.offlineMode],
+            (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve();
+            },
+        );
+    });
 }
 
 export function list(db: sqlite3.Database, maxServers: number, page: number, keyWord: string): Promise<Array<ServerEntity>> {
@@ -33,16 +58,13 @@ export function list(db: sqlite3.Database, maxServers: number, page: number, key
         : [`%${search}%`, limit, offset];
 
     return new Promise((resolve, reject) => {
-        db.all(
-            query,
-            parameters,
-            (err, rows) => {
+        db.all<ServerRow>(query, parameters, (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
                 }
 
-                resolve((rows as Array<ServerRow>).map((row) => ({
+                resolve(rows.map((row) => ({
                     ...row,
                     offlineMode: Boolean(row.offlineMode),
                     stats: "RUNNING"
@@ -70,6 +92,58 @@ export function countTotal(db: sqlite3.Database, keyWord: string): Promise<numbe
                 }
 
                 resolve(row.total);
+            },
+        );
+    });
+}
+
+export function findByPort(db: sqlite3.Database, port: number): Promise<ServerEntity | null> {
+    return new Promise((resolve, reject) => {
+        db.get<ServerRow>(
+            "SELECT * FROM servers WHERE port = ?",
+            [port],
+            (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                if (!row) {
+                    resolve(null);
+                    return;
+                }
+
+                resolve({
+                    ...row,
+                    offlineMode: Boolean(row.offlineMode),
+                    stats: "RUNNING"
+                });
+            },
+        );
+    });
+}
+
+export function findByPath(db: sqlite3.Database, path: string): Promise<ServerEntity | null> {
+    return new Promise((resolve, reject) => {
+        db.get<ServerRow>(
+            "SELECT * FROM servers WHERE path = ?",
+            [path],
+            (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                if (!row) {
+                    resolve(null);
+                    return;
+                }
+
+                resolve({
+                    ...row,
+                    offlineMode: Boolean(row.offlineMode),
+                    stats: "RUNNING"
+                });
             },
         );
     });

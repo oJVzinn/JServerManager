@@ -4,10 +4,11 @@ import {useEffect, useState} from "react";
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 
 type Props = {
-    keyWord: string
+    keyWord: string,
+    setLoading: (isLoading: boolean) => void;
 }
 
-export default function ServerList( {keyWord}: Props ) {
+export default function ServerList( {keyWord, setLoading}: Props ) {
     const pageSize = 11;
     const [server, setServers] = useState<Array<ServerEntity> | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -17,7 +18,7 @@ export default function ServerList( {keyWord}: Props ) {
     const paginationEnd = Math.min(paginationStart + 2, totalPages);
 
     useEffect(() => {
-        setServers(null);
+        setLoading(true);
 
         Promise.all([
             window.electronAPI.countServers(keyWord),
@@ -25,8 +26,12 @@ export default function ServerList( {keyWord}: Props ) {
         ]).then(([total, servers]) => {
             setTotalServer(total);
             setServers(servers);
+        }).catch((error) => {
+            console.error("Não foi possível carregar os servidores", error);
+        }).finally(() => {
+            setLoading(false);
         });
-    }, [currentPage, keyWord])
+    }, [currentPage, keyWord, setLoading])
 
     function updateToPreviousPage() {
         if (currentPage <= 1) return

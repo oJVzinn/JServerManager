@@ -13,6 +13,14 @@ declare global {
 
             countServers: (keyWord: string) => Promise<number>
 
+            findServerByPort: (port: number) => Promise<ServerEntity | null>
+
+            findServerByPath: (serverPath: string) => Promise<ServerEntity | null>
+
+            findDefaultFolderByService: (service: string) => Promise<string | null>
+
+            processServerCreate: (server: ServerEntity) => Promise<void>
+
             selectFolder: () => Promise<{
                 name: string;
                 path: string;

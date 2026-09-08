@@ -1,0 +1,38 @@
+.container {
+    min-height: 100%;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    background-color: color-mix(in srgb, var(--color-bg) 48%, transparent);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    cursor: wait;
+}
+
+.spinner {
+    width: 42px;
+    height: 42px;
+    border: 4px solid color-mix(in srgb, var(--color-text-muted) 28%, transparent);
+    border-top-color: white;
+    border-right-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    filter: drop-shadow(0 2px 8px color-mix(in srgb, #ff0033 30%, transparent));
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner {
+        animation-duration: 1.8s;
+    }
+}

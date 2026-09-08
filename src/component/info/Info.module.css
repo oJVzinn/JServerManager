@@ -4,10 +4,16 @@
     top: 20px;
     right: 20px;
     align-items: center;
-    padding: 15px 10px;
+    padding: 10px 5px;
     border-radius: 10px;
     justify-content: space-between;
+    width: 25%;
+    height: 10%;
     gap: 15px;
+    overflow: hidden;
+    animation-name: infoTransition;
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
 }
 
 .infoPositive {
@@ -35,11 +41,13 @@
     padding: 0;
     width: 80%;
     gap: 5px;
-    flex-wrap: wrap;
+    overflow: hidden;
+    justify-content: space-between;
 }
 
 .infoTitle {
     font-weight: bold;
+    width: 100%;
     color: var(--color-text);
     font-size: var(--font-size-subtitle);
 }
@@ -47,4 +55,17 @@
 .infoDesc {
     color: var(--color-text);
     font-size: var(--font-size-description);
+    width: 100%;
+}
+
+@keyframes infoTransition {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
 }

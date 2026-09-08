@@ -1,5 +1,5 @@
 import styles from "./CreateForm.module.css"
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity"
 import Info from "../../../../component/info";
@@ -12,9 +12,12 @@ type ServerCreateInfo = {
     onlineMode: boolean;
 }
 
-export default function CreateForm() {
+type Props = {
+    setLoading: (isLoading: boolean) => void;
+}
+
+export default function CreateForm( {setLoading}: Props ) {
     const navigate = useNavigate();
-    const [folderName, setFolderName] = useState("");
     const [folderPath, setFolderPath] = useState("");
     const [infoBox, setInfoBox] = useState<InfoBoxEntity | null>(null)
     const [serverCreateInfo, setServerCreateInfo] = useState<ServerCreateInfo>({
@@ -30,13 +33,67 @@ export default function CreateForm() {
 
         if (!folder) return;
 
-        setFolderName(folder.name);
         setFolderPath(folder.path);
+        setServerCreateInfo((current) => ({
+            ...current,
+            serverPath: folder.path
+        }));
     }
 
-    function processServerCreate() {
-        if (serverCreateInfo.name === "") setInfoBox({title: "ERRO", description: "O título não pode ser vazio", type: "error"})
+    async function processServerCreate() {
+        if (serverCreateInfo.name.trim() === "") {
+            sendInfoBox({title: "ERRO", description: "O título não pode ser vazio", type: "error"})
+            return
+        }
+
+        if (await window.electronAPI.findServerByPort(serverCreateInfo.port) !== null) {
+            sendInfoBox({title: "ERRO", description: "Já existe um servidor criado com essa porta", type: "error"})
+            return
+        }
+
+        if (await window.electronAPI.findServerByPath(serverCreateInfo.serverPath) !== null) {
+            sendInfoBox({title: "ERRO", description: "Já existe um servidor criado com essa pasta raiz", type: "error"})
+            return
+        }
+
+        setLoading(true)
+
+        window.electronAPI.processServerCreate({
+            id: 0,
+            name: serverCreateInfo.name,
+            offlineMode: serverCreateInfo.onlineMode,
+            port: serverCreateInfo.port,
+            type: serverCreateInfo.serverType,
+            path: serverCreateInfo.serverPath,
+            stats: ""
+        }).then(()=> {
+            navigate("/")
+        }).catch(reason => {
+            const description = reason instanceof Error
+                ? reason.message
+                : typeof reason === "string"
+                    ? reason
+                    : JSON.stringify(reason) ?? String(reason)
+            sendInfoBox({title: "ERRO", description, type: "error"})
+        }).finally(() => {
+            setLoading(false)
+        })
     }
+
+    function sendInfoBox(infoBox: InfoBoxEntity) {
+        setInfoBox(null);
+        setInfoBox(infoBox);
+    }
+
+    useEffect(()=> {
+        if (infoBox === null) return;
+
+        const id = setTimeout(() => {
+            setInfoBox(null);
+        }, 3000);
+
+        return () => clearTimeout(id);
+    }, [infoBox])
 
     return (
         <div className={styles.CreateForm}>
@@ -45,24 +102,43 @@ export default function CreateForm() {
             <form className={styles.form}>
                 <div className={styles.field}>
                     <span className={styles.titleField}>Nome do servidor</span>
-                    <input className={styles.inputField} onChange={(event) => {
-                        serverCreateInfo.name = event.currentTarget.value
-                        setServerCreateInfo(serverCreateInfo)
+                    <input className={styles.inputField} onChange={async (event) => {
+                        const name = event.currentTarget.value.trim();
+                        const basePath = await window.electronAPI.findDefaultFolderByService("ServerConfig");
+                        const finalPath = basePath ? `${basePath}/${name.trim()}` : "";
+
+                        setServerCreateInfo((current) => ({
+                            ...current,
+                            name,
+                            serverPath: finalPath,
+                        }));
                     }}/>
                 </div>
 
                 <div className={styles.field}>
                     <span className={styles.titleField}>Porta do servidor</span>
-                    <input className={styles.inputField} type={"number"} defaultValue={25565} onChange={(event) => {
-                        if (event.currentTarget.valueAsNumber <= 0) event.currentTarget.value = "25565"
-                    }}/>
+                    <input className={styles.inputField} type="number" value={serverCreateInfo.port}
+                           min={1} onChange={(event) => {
+                            const value = event.currentTarget.valueAsNumber;
+                            setServerCreateInfo((current) => ({
+                                ...current,
+                                port: Number.isNaN(value) || value <= 0 ? 25565 : value,
+                            }));
+                        }}
+                    />
                 </div>
 
                 <div className={styles.field}>
                     <span className={styles.titleField}>Tipo do servidor</span>
-                    <select className={styles.inputField}>
-                        <option className={styles.option}>PROXY</option>
-                        <option className={styles.option}>BUKKIT</option>
+                    <select className={styles.inputField} onChange={(event) => {
+                        const serverType = event.currentTarget.value;
+                        setServerCreateInfo((current) => ({
+                            ...current,
+                            serverType,
+                        }));
+                    }}>
+                        <option value="PROXY" className={styles.option}>PROXY</option>
+                        <option value="BUKKIT" className={styles.option}>BUKKIT</option>
                     </select>
                 </div>
 
@@ -73,15 +149,21 @@ export default function CreateForm() {
                             <button type="button" onClick={handleFolderSelection} className={styles.selectPathButton}>
                                 Selecionar pasta
                             </button>
-                            <span>{folderPath || folderName}</span>
+                            <span>{folderPath}</span>
                         </div>
-                        <span>Caso não selecione nenhum, será criado automaticamente após a conclusão</span>
+                        <span>Caso não selecione nenhum, será criado automaticamente com base no nome após a conclusão</span>
                     </div>
                 </div>
 
                 <div className={styles.field}>
                     <span className={styles.titleField}>Servidor Pirata?</span>
-                    <input className={styles.checkbox} type={"checkbox"}/>
+                    <input className={styles.checkbox} type={"checkbox"} onChange={(event) => {
+                        const onlineMode = event.currentTarget.checked;
+                        setServerCreateInfo((current) => ({
+                            ...current,
+                            onlineMode: !onlineMode
+                        }));
+                    }}/>
                 </div>
             </form>
             <div className={styles.actions}>
