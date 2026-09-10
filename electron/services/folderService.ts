@@ -1,15 +1,26 @@
 import {app, dialog} from "electron";
 import path from "node:path";
-import { mkdir } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import { list, insertServices } from "../database/repositories/FolderRepository.js"
 import { getDatabase } from "../database/database.js";
 import type { ServiceConfigEntity } from "../entity/ServiceConfigEntity.js"
 
 export default async function init() {
     const services = await list(getDatabase());
-    if (services.length === 0) {
-        await setupDefaultConfigs();
-    }
+    if (services.length === 0) await setupDefaultConfigs();
+}
+
+export async function deletePath(pathLocation: string): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+        await rm(pathLocation, {
+            recursive: true,
+            force: true
+        }).catch((err) => {
+            reject(new Error(`Erro ao tentar excluir a pasta ${pathLocation}`, err))
+        })
+
+        resolve()
+    })
 }
 
 export async function openSelectFolderOnCreation(): Promise<{name: string, path: string} | null> {
