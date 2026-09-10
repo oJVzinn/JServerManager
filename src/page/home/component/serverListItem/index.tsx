@@ -1,6 +1,7 @@
 import styles from "./ServerListItem.module.css"
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 import {useEffect, useState} from "react";
+import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
 
 type ServerItemList = ServerEntity & {
     position: number
@@ -8,14 +9,27 @@ type ServerItemList = ServerEntity & {
 }
 
 type props = {
-    serverItemList: ServerItemList
+    serverItemList: ServerItemList,
+    sendInfoBox: (infoBox: InfoBoxEntity) => void
+    processDeleteServer: (serverId: number) => void
 }
 
-export default function ServerListItem( {serverItemList}: props ) {
+export default function ServerListItem( {serverItemList, sendInfoBox, processDeleteServer}: props ) {
     const [serverItem, setServerItem] = useState<ServerItemList>(serverItemList)
+    async function processDelete() {
+        try {
+            await window.electronAPI.deleteServerByID(serverItemList.id)
+            processDeleteServer(serverItemList.id)
+            sendInfoBox({title: "SUCESSO", description: `Servidor ${serverItem.id} excluido com sucesso`, type: "sucess"})
+        } catch (reason) {
+            const description = reason instanceof Error
+                ? reason.message
+                : typeof reason === "string"
+                    ? reason
+                    : JSON.stringify(reason) ?? String(reason)
 
-    async function processDeleteServer() {
-
+            sendInfoBox({title: "ERRO", description: description, type: "error"})
+        }
     }
 
     useEffect(() => {
@@ -44,7 +58,9 @@ export default function ServerListItem( {serverItemList}: props ) {
             <button className={styles.actionButton}><img className={styles.buttonIcon} alt="Editar servidor" src="./assets/edit.svg"/></button>
         </td>
         <td className={styles.buttonCell}>
-            <button className={styles.actionButton}><img className={styles.buttonIcon} alt="Excluir servidor" src="./assets/delete.svg"/></button>
+            <button className={styles.actionButton} onClick={processDelete}>
+                <img className={styles.buttonIcon} alt="Excluir servidor" src="./assets/delete.svg"/>
+            </button>
         </td>
     </tr>
 }

@@ -155,9 +155,12 @@ export function deleteByID(db: sqlite3.Database, id: number): Promise<void> {
             "DELETE FROM servers WHERE id = ?",
             [id],
             (err) => {
-                if (err)
-                    throw new Error(`Erro do deleter o servidor de ID ${id}`, err)
+                if (err) {
+                    reject(new Error(`Erro do deleter o servidor de ID ${id}`, err))
+                    return
+                }
 
+                resolve()
             }
         );
     });

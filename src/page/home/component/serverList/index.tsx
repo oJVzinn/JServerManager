@@ -4,18 +4,29 @@ import {useEffect, useState} from "react";
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 import ServerListHeader from "../serverListHeader";
 import ServerListFooter from "../serverListFooter";
+import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
 
 type Props = {
     keyWord: string,
     setLoading: (isLoading: boolean) => void;
+    sendInfoBox: (infoBox: InfoBoxEntity) => void
 }
 
-export default function ServerList({keyWord, setLoading}: Props) {
+export default function ServerList({keyWord, setLoading, sendInfoBox}: Props) {
     const pageSize = 11;
-    const [server, setServers] = useState<Array<ServerEntity> | null>(null)
+    const [servers, setServers] = useState<Array<ServerEntity> | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [totalServers, setTotalServer] = useState<number>(0)
     const [allSelect, setAllSelect] = useState<boolean>(false)
+
+    function processDeleteServer(serverId: number) {
+        if (servers !== null) {
+            setServers(current => current === null
+                ? null
+                : current.filter(server => server.id !== serverId))
+            setTotalServer(current => Math.max(0, current - 1))
+        }
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -32,8 +43,6 @@ export default function ServerList({keyWord, setLoading}: Props) {
             setLoading(false);
         });
     }, [currentPage, keyWord, setLoading])
-
-
 
     return (
         <div className={styles.ServerList}>
@@ -53,23 +62,23 @@ export default function ServerList({keyWord, setLoading}: Props) {
 
                 <tbody>
                 {
-                    server !== null && (server.length === 0 ?
+                    servers !== null && (servers.length === 0 ?
                         <tr>
                             <td colSpan={8}>Nenhum item encontrado...</td>
                         </tr> :
-                        server.map((value, index) => {
+                        servers.map((value, index) => {
                             const finalServerItem = {
                                 ...value,
                                 position: index,
                                 selected: allSelect
                             }
 
-                            return <ServerListInfo serverItemList={finalServerItem} key={index}/>
+                            return <ServerListInfo serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id}/>
                         }))
                 }
                 </tbody>
 
-                <ServerListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize}/>
+                <ServerListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize} setServers={setServers}/>
             </table>
         </div>
     )

@@ -14,6 +14,7 @@
     animation-name: infoTransition;
     animation-duration: 300ms;
     animation-timing-function: ease-out;
+    z-index: 999;
 }
 
 .infoPositive {

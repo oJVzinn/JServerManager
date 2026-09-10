@@ -1,8 +1,8 @@
 import styles from "./CreateForm.module.css"
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router";
-import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity"
 import Info from "../../../../component/info";
+import {useInfoBox} from "../../../../hook/InfoBoxHook.tsx";
 
 type ServerCreateInfo = {
     name: string;
@@ -19,7 +19,7 @@ type Props = {
 export default function CreateForm( {setLoading}: Props ) {
     const navigate = useNavigate();
     const [folderPath, setFolderPath] = useState("");
-    const [infoBox, setInfoBox] = useState<InfoBoxEntity | null>(null)
+    const { infoBox, sendInfoBox } = useInfoBox();
     const [serverCreateInfo, setServerCreateInfo] = useState<ServerCreateInfo>({
         name: "",
         port: 25565,
@@ -79,21 +79,6 @@ export default function CreateForm( {setLoading}: Props ) {
             setLoading(false)
         })
     }
-
-    function sendInfoBox(infoBox: InfoBoxEntity) {
-        setInfoBox(null);
-        setInfoBox(infoBox);
-    }
-
-    useEffect(()=> {
-        if (infoBox === null) return;
-
-        const id = setTimeout(() => {
-            setInfoBox(null);
-        }, 3000);
-
-        return () => clearTimeout(id);
-    }, [infoBox])
 
     return (
         <div className={styles.CreateForm}>
