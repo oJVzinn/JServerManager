@@ -19,6 +19,8 @@ declare global {
 
             deleteServerByID: (id: number) => Promise<void>
 
+            deleteFolderByPath: (path: string) => Promise<void>
+
             findDefaultFolderByService: (service: string) => Promise<string | null>
 
             processServerCreate: (server: ServerEntity) => Promise<void>

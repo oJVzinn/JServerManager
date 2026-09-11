@@ -10,13 +10,13 @@ export default async function init() {
     if (services.length === 0) await setupDefaultConfigs();
 }
 
-export async function deletePath(pathLocation: string): Promise<void> {
+export async function deletePath(path: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
-        await rm(pathLocation, {
+        await rm(path, {
             recursive: true,
             force: true
         }).catch((err) => {
-            reject(new Error(`Erro ao tentar excluir a pasta ${pathLocation}`, err))
+            reject(new Error(`Erro ao tentar excluir a pasta ${path}`, err))
         })
 
         resolve()

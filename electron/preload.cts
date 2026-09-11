@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
     deleteServerByID: (id: number) => ipcRenderer.invoke("server:deleteByID", id),
     processServerCreate: (server: ServerEntity) => ipcRenderer.invoke("server:processServerCreate", server),
     findDefaultFolderByService: (service: string) => ipcRenderer.invoke("folder:defaultByService", service),
-    selectFolder: () => ipcRenderer.invoke("folder:select")
+    selectFolder: () => ipcRenderer.invoke("folder:select"),
+    deleteFolderByPath: (path: string) => ipcRenderer.invoke("folder:deleteByPath", path)
 
 });

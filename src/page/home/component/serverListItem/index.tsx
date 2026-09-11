@@ -18,6 +18,7 @@ export default function ServerListItem( {serverItemList, sendInfoBox, processDel
     const [serverItem, setServerItem] = useState<ServerItemList>(serverItemList)
     async function processDelete() {
         try {
+            await window.electronAPI.deleteFolderByPath(serverItemList.path)
             await window.electronAPI.deleteServerByID(serverItemList.id)
             processDeleteServer(serverItemList.id)
             sendInfoBox({title: "SUCESSO", description: `Servidor ${serverItem.id} excluido com sucesso`, type: "sucess"})

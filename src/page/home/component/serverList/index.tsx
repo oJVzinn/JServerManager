@@ -1,6 +1,7 @@
 import styles from "./ServerList.module.css"
 import ServerListInfo from "../serverListItem";
 import {useEffect, useState} from "react";
+import type {Dispatch, SetStateAction} from "react";
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 import ServerListHeader from "../serverListHeader";
 import ServerListFooter from "../serverListFooter";
@@ -9,12 +10,14 @@ import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
 type Props = {
     keyWord: string,
     setLoading: (isLoading: boolean) => void;
-    sendInfoBox: (infoBox: InfoBoxEntity) => void
+    sendInfoBox: (infoBox: InfoBoxEntity) => void;
+    servers: Array<ServerEntity> | null;
+    setServers: Dispatch<SetStateAction<Array<ServerEntity> | null>>;
 }
 
-export default function ServerList({keyWord, setLoading, sendInfoBox}: Props) {
+export default function ServerList({keyWord, setLoading, sendInfoBox, setServers, servers}: Props) {
     const pageSize = 11;
-    const [servers, setServers] = useState<Array<ServerEntity> | null>(null)
+
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [totalServers, setTotalServer] = useState<number>(0)
     const [allSelect, setAllSelect] = useState<boolean>(false)
