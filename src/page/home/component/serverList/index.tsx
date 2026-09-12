@@ -12,17 +12,31 @@ type Props = {
     setLoading: (isLoading: boolean) => void;
     sendInfoBox: (infoBox: InfoBoxEntity) => void;
     servers: Array<ServerEntity> | null;
+    serversSelected: Array<number>;
     setServersSelected: Dispatch<SetStateAction<Array<number>>>;
     setServers: Dispatch<SetStateAction<Array<ServerEntity> | null>>;
     reloadKey: number;
 }
 
-export default function ServerList({keyWord, setLoading, sendInfoBox, setServers, servers, setServersSelected, reloadKey}: Props) {
+export default function ServerList({keyWord, setLoading, sendInfoBox, setServers, servers, serversSelected, setServersSelected, reloadKey}: Props) {
     const pageSize = 11;
 
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [totalServers, setTotalServer] = useState<number>(0)
-    const [allSelect, setAllSelect] = useState<boolean>(false)
+
+    const allSelect = servers !== null
+        && servers.length > 0
+        && servers.every((server) => serversSelected.includes(server.id))
+
+    function setAllSelect(checked: boolean) {
+        if (servers === null) return
+
+        const pageServerIds = servers.map((server) => server.id)
+
+        setServersSelected((current) => checked
+            ? [...new Set([...current, ...pageServerIds])]
+            : current.filter((serverId) => !pageServerIds.includes(serverId)))
+    }
 
     function processDeleteServer(serverId: number) {
         if (servers !== null) {
@@ -41,6 +55,13 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
             window.electronAPI.listServers(pageSize, currentPage, keyWord),
         ]).then(([total, servers]) => {
             setTotalServer(total);
+
+            const lastPage = Math.max(1, Math.ceil(total / pageSize));
+            if (currentPage > lastPage) {
+                setCurrentPage(lastPage);
+                return;
+            }
+
             setServers(servers);
         }).catch((error) => {
             console.error("Não foi possível carregar os servidores", error);
@@ -75,7 +96,7 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
                             const finalServerItem = {
                                 ...value,
                                 position: index,
-                                selected: allSelect
+                                selected: serversSelected.includes(value.id)
                             }
 
                             return <ServerListInfo serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id} setServersSelected={setServersSelected}/>
@@ -83,7 +104,7 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
                 }
                 </tbody>
 
-                <ServerListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize} setServers={setServers}/>
+                <ServerListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize}/>
             </table>
         </div>
     )

@@ -25,7 +25,7 @@ export default function Home() {
                             setServersSelected([])
                             setServersReloadKey((current) => current + 1)
                         }}/>
-                <ServerList keyWord={keyWord} setLoading={setLoading} reloadKey={serversReloadKey}
+                <ServerList keyWord={keyWord} setLoading={setLoading} reloadKey={serversReloadKey} serversSelected={serversSelected}
                             sendInfoBox={sendInfoBox} setServers={setServers}
                             servers={servers} setServersSelected={setServersSelected}
                 />

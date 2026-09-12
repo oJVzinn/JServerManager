@@ -1,15 +1,13 @@
 import styles from "./ServerListFooter.module.css";
-import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 
 type Props = {
     currentPage: number;
     totalServers: number;
     pageSize: number;
-    setServers: (servers: Array<ServerEntity> | null) => void
     setCurrentPage: (currentPage: number) => void
 }
 
-export default function ServerListFooter( {currentPage, totalServers, pageSize, setCurrentPage, setServers}: Props ) {
+export default function ServerListFooter( {currentPage, totalServers, pageSize, setCurrentPage}: Props ) {
     const totalPages = Math.max(1, Math.ceil(totalServers / pageSize));
     const paginationStart = Math.floor((currentPage - 1) / 3) * 3 + 1;
     const paginationEnd = Math.min(paginationStart + 2, totalPages);
@@ -17,13 +15,11 @@ export default function ServerListFooter( {currentPage, totalServers, pageSize, 
     function updateToPreviousPage() {
         if (currentPage <= 1) return
         setCurrentPage(currentPage - 1)
-        setServers(null)
     }
 
     function updateToNextPage() {
         if (currentPage >= totalPages) return
         setCurrentPage(currentPage + 1)
-        setServers(null)
     }
 
     return (
