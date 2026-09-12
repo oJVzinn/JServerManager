@@ -165,3 +165,25 @@ export function deleteByID(db: sqlite3.Database, id: number): Promise<void> {
         );
     });
 }
+
+export function findServerPathByID(db: sqlite3.Database, id: number): Promise<string | null> {
+    return new Promise((resolve, reject) => {
+        db.get<ServerRow>(
+            "SELECT * FROM servers WHERE id = ?",
+            [id],
+            (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                if (!row) {
+                    resolve(null);
+                    return;
+                }
+
+                resolve(row.path);
+            },
+        );
+    });
+}

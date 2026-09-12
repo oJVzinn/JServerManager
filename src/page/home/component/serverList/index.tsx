@@ -12,10 +12,12 @@ type Props = {
     setLoading: (isLoading: boolean) => void;
     sendInfoBox: (infoBox: InfoBoxEntity) => void;
     servers: Array<ServerEntity> | null;
+    setServersSelected: Dispatch<SetStateAction<Array<number>>>;
     setServers: Dispatch<SetStateAction<Array<ServerEntity> | null>>;
+    reloadKey: number;
 }
 
-export default function ServerList({keyWord, setLoading, sendInfoBox, setServers, servers}: Props) {
+export default function ServerList({keyWord, setLoading, sendInfoBox, setServers, servers, setServersSelected, reloadKey}: Props) {
     const pageSize = 11;
 
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -45,7 +47,7 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
         }).finally(() => {
             setLoading(false);
         });
-    }, [currentPage, keyWord, setLoading])
+    }, [currentPage, keyWord, reloadKey, setLoading])
 
     return (
         <div className={styles.ServerList}>
@@ -76,7 +78,7 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
                                 selected: allSelect
                             }
 
-                            return <ServerListInfo serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id}/>
+                            return <ServerListInfo serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id} setServersSelected={setServersSelected}/>
                         }))
                 }
                 </tbody>

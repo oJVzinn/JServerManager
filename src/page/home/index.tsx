@@ -12,14 +12,23 @@ export default function Home() {
     const [loading, setLoading] = useState<boolean>(false)
     const { infoBox, sendInfoBox } = useInfoBox();
     const [servers, setServers] = useState<Array<ServerEntity> | null>(null)
+    const [serversSelected, setServersSelected] = useState<Array<number>>([])
+    const [serversReloadKey, setServersReloadKey] = useState(0)
 
     return (
         <>
             {infoBox !== null && <Info typeInfo={infoBox.type} title={infoBox.title} description={infoBox.description}/>}
             <Loading loading={loading}>
                 <Header/>
-                <Banner setKeyWord={setKetWord} keyWord={keyWord}/>
-                <ServerList keyWord={keyWord} setLoading={setLoading} sendInfoBox={sendInfoBox} setServers={setServers} servers={servers}/>
+                <Banner setKeyWord={setKetWord} keyWord={keyWord} serversSelected={serversSelected} setLoading={setLoading} sendInfoBox={sendInfoBox}
+                        onServersDeleted={() => {
+                            setServersSelected([])
+                            setServersReloadKey((current) => current + 1)
+                        }}/>
+                <ServerList keyWord={keyWord} setLoading={setLoading} reloadKey={serversReloadKey}
+                            sendInfoBox={sendInfoBox} setServers={setServers}
+                            servers={servers} setServersSelected={setServersSelected}
+                />
             </Loading>
         </>
     )

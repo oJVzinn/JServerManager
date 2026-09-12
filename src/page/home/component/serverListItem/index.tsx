@@ -1,6 +1,6 @@
 import styles from "./ServerListItem.module.css"
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
-import {useEffect, useState} from "react";
+import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
 import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
 
 type ServerItemList = ServerEntity & {
@@ -9,12 +9,13 @@ type ServerItemList = ServerEntity & {
 }
 
 type props = {
-    serverItemList: ServerItemList,
+    serverItemList: ServerItemList;
+    setServersSelected: Dispatch<SetStateAction<Array<number>>>;
     sendInfoBox: (infoBox: InfoBoxEntity) => void
     processDeleteServer: (serverId: number) => void
 }
 
-export default function ServerListItem( {serverItemList, sendInfoBox, processDeleteServer}: props ) {
+export default function ServerListItem( {serverItemList, sendInfoBox, processDeleteServer, setServersSelected}: props ) {
     const [serverItem, setServerItem] = useState<ServerItemList>(serverItemList)
     async function processDelete() {
         try {
@@ -34,21 +35,28 @@ export default function ServerListItem( {serverItemList, sendInfoBox, processDel
     }
 
     useEffect(() => {
-        setServerItem((current)=> ({
+        setServerItem((current) => ({
             ...current,
             selected: serverItemList.selected
         }))
-    }, [serverItemList]);
+
+        setServersSelected((current) => serverItemList.selected
+            ? current.includes(serverItemList.id) ? current : [...current, serverItemList.id]
+            : current.filter((id) => id !== serverItemList.id))
+    }, [serverItemList.id, serverItemList.selected, setServersSelected]);
 
     return <tr className={(serverItem.position % 2 == 0 ? styles.tableBackgroundPrimary : styles.tableBackgroundSecondary) }>
         <td className={`${styles.tableCell}`}>
             <input type={"checkbox"} className={styles.checkbox} checked={serverItem.selected} onChange={(event)=> {
-                const checked = event.currentTarget.checked
-                setServerItem((current)=> ({
-                    ...current,
-                    selected: checked
-                }))
-            }}/>
+                 const checked = event.currentTarget.checked
+                 setServerItem((current)=> ({
+                     ...current,
+                     selected: checked
+                 }))
+                 setServersSelected((current) => checked
+                     ? current.includes(serverItem.id) ? current : [...current, serverItem.id]
+                     : current.filter((id) => id !== serverItem.id))
+             }}/>
         </td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.id}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.name}</td>

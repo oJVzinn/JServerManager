@@ -1,0 +1,58 @@
+.ServerActionButtons {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 10px;
+}
+
+.createBg {
+    background-color: var(--color-positive);
+}
+
+.createBg:hover {
+    background-color: var(--color-positive-hover);
+}
+
+.updateBg {
+    background-color: var(--color-info);
+}
+
+.updateBg:hover {
+    background-color: var(--color-info-hover);
+}
+
+.deleteBg {
+    background-color: var(--color-negative);
+}
+
+.deleteBg:hover {
+    background-color: var(--color-negative-hover);
+}
+
+.actionButton {
+    display: flex;
+    outline: none;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: 0.2s ease;
+}
+
+.actionImg {
+    width: 25px;
+    height: 25px;
+}
+
+.creatorName {
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
+}
+
+.actionButton:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}

@@ -13,10 +13,13 @@
     --color-negative-hover: #b91c1c;
     --color-warning: #d97706;
     --color-warning-hover: #b45309;
+    --color-info: #2563eb;
+    --color-info-hover: #1d4ed8;
 
     --color-positive-text: #ffffff;
     --color-negative-text: #ffffff;
     --color-warning-text: #422006;
+    --color-info-text: #ffffff;
 
     --color-border: #cbd5e1;
 
@@ -41,10 +44,13 @@
         --color-negative-hover: #dc2626;
         --color-warning: #fbbf24;
         --color-warning-hover: #f59e0b;
+        --color-info: #3b82f6;
+        --color-info-hover: #2563eb;
 
         --color-positive-text: #ffffff;
         --color-negative-text: #ffffff;
         --color-warning-text: #422006;
+        --color-info-text: #ffffff;
 
         --color-border: #475569;
     }

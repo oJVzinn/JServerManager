@@ -25,6 +25,8 @@ declare global {
 
             processServerCreate: (server: ServerEntity) => Promise<void>
 
+            findServerPathByID: (id: number) => Promise<string | null>
+
             selectFolder: () => Promise<{
                 name: string;
                 path: string;

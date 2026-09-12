@@ -1,6 +1,13 @@
 import { ipcMain } from "electron";
 import { getDatabase } from "../../database/database.js";
-import {list, countTotal, findByPort, findByPath, deleteByID} from "../../database/repositories/ServerRepository.js"
+import {
+    list,
+    countTotal,
+    findByPort,
+    findByPath,
+    deleteByID,
+    findServerPathByID
+} from "../../database/repositories/ServerRepository.js"
 import { ServerEntity } from "../../entity/ServerEntity.js";
 import { processCreateServer } from "../../services/serverService.js"
 
@@ -27,5 +34,9 @@ export default function init() {
 
     ipcMain.handle("server:processServerCreate", async (_event, server: ServerEntity) => {
         return processCreateServer(server)
+    })
+
+    ipcMain.handle("server:findServerPathByID", async (_event, serverID: number) => {
+        return findServerPathByID(getDatabase(), serverID)
     })
 }
