@@ -1,4 +1,5 @@
 import styles from "./ServerListHeader.module.css";
+import serverListStyles from "../serverList/ServerList.module.css"
 
 type Props = {
     allSelect: boolean
@@ -9,7 +10,7 @@ export default function ServerListHeader( {allSelect, setAllSelect}: Props) {
     return (
         <thead>
         <tr>
-            <th><input type={"checkbox"} className={styles.checkbox} checked={allSelect} onChange={(event) => {
+            <th><input type={"checkbox"} className={serverListStyles.checkbox} checked={allSelect} onChange={(event) => {
                 const checked = event.currentTarget.checked
                 setAllSelect(checked)
             }}/></th>

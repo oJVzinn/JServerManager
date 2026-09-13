@@ -10,6 +10,7 @@
 
 .manu {
     position: fixed;
+    z-index: 10;
     background-color: var(--color-bg-secondary);
     display: flex;
     align-items: center;

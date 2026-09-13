@@ -56,12 +56,16 @@
 
 .checkbox {
     appearance: none;
+    position: relative;
     align-self: flex-start;
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    line-height: 21px;
     border-radius: 5px;
     background: var(--color-bg-primary);
     cursor: pointer;
+    margin: 0;
 }
 
 .checkbox:hover {
@@ -79,11 +83,12 @@
 
 .checkbox:checked::after {
     content: "✓";
-    display: block;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
     color: var(--color-text);
-    font-size: 16px;
-    line-height: 21px;
-    text-align: center;
+    font-size: var(--font-size-subtitle);
     font-weight: bold;
 }
 

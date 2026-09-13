@@ -1,4 +1,5 @@
 import styles from "./ServerListItem.module.css"
+import serverListStyles from "../serverList/ServerList.module.css"
 import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
 import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
 import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
@@ -47,7 +48,7 @@ export default function ServerListItem( {serverItemList, sendInfoBox, processDel
 
     return <tr className={(serverItem.position % 2 == 0 ? styles.tableBackgroundPrimary : styles.tableBackgroundSecondary) }>
         <td className={`${styles.tableCell}`}>
-            <input type={"checkbox"} className={styles.checkbox} checked={serverItem.selected} onChange={(event)=> {
+            <input type={"checkbox"} className={serverListStyles.checkbox} checked={serverItem.selected} onChange={(event)=> {
                  const checked = event.currentTarget.checked
                  setServerItem((current)=> ({
                      ...current,
