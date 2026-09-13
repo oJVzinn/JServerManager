@@ -5,17 +5,18 @@ type ServerRow = Omit<ServerEntity, "offlineMode" | "stats"> & {
     offlineMode: number;
 };
 
-export function createServerTable(db: sqlite3.Database): Promise<void> {
+export async function createServerTable(db: sqlite3.Database): Promise<void> {
     return new Promise((resolve, reject) => {
         db.run(`
-        CREATE TABLE IF NOT EXISTS servers
+        CREATE TABLE IF NOT EXISTS server
         (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             path TEXT NOT NULL,
-            type TEXT NOT NULL,
-            port INT NOT NULL UNIQUE DEFAULT (25565),
-            offlineMode BOOLEAN NOT NULL DEFAULT (TRUE)
+            serverTypeID INTEGER NOT NULL,
+            port INTEGER NOT NULL UNIQUE DEFAULT (25565),
+            offlineMode BOOLEAN NOT NULL DEFAULT (TRUE),
+            FOREIGN KEY (serverTypeID) REFERENCES serverType(id)
         )
       `, (err) => {
             if (err) {
@@ -30,8 +31,8 @@ export function createServerTable(db: sqlite3.Database): Promise<void> {
 
 export async function createServer(db: sqlite3.Database, server: ServerEntity) {
     await new Promise<void>((resolve, reject) => {
-        db.run("INSERT INTO servers(name, path, type, port, offlineMode) VALUES (?, ?, ?, ?, ?)",
-            [server.name, server.path, server.type, server.port, server.offlineMode],
+        db.run("INSERT INTO server(name, path, serverTypeID, port, offlineMode) VALUES (?, ?, ?, ?, ?)",
+            [server.name, server.path, server.serverTypeID, server.port, server.offlineMode],
             (err) => {
                 if (err) {
                     reject(err);
@@ -44,14 +45,14 @@ export async function createServer(db: sqlite3.Database, server: ServerEntity) {
     });
 }
 
-export function list(db: sqlite3.Database, maxServers: number, page: number, keyWord: string): Promise<Array<ServerEntity>> {
+export async function list(db: sqlite3.Database, maxServers: number, page: number, keyWord: string): Promise<Array<ServerEntity>> {
     const limit = Math.max(1, Math.floor(maxServers));
     const currentPage = Math.max(1, Math.floor(page));
     const offset = (currentPage - 1) * limit;
     const search = keyWord.trim();
     const query = search === ""
-        ? "SELECT * FROM servers ORDER BY id LIMIT ? OFFSET ?"
-        : "SELECT * FROM servers WHERE name LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+        ? "SELECT server.*, serverType.name AS serverTypeName FROM server JOIN serverType ON server.serverTypeID = serverType.id ORDER BY id LIMIT ? OFFSET ?"
+        : "SELECT server.*, serverType.name AS serverTypeName FROM server JOIN serverType ON server.serverTypeID = serverType.id WHERE name LIKE ? ORDER BY id LIMIT ? OFFSET ?";
 
     const parameters = search === ""
         ? [limit, offset]
@@ -74,11 +75,11 @@ export function list(db: sqlite3.Database, maxServers: number, page: number, key
     });
 }
 
-export function countTotal(db: sqlite3.Database, keyWord: string): Promise<number> {
+export async function countTotal(db: sqlite3.Database, keyWord: string): Promise<number> {
     const search = keyWord.trim();
     const query = search === ""
-        ? "SELECT COUNT(id) AS total FROM servers"
-        : "SELECT COUNT(id) AS total FROM servers WHERE name LIKE ?";
+        ? "SELECT COUNT(id) AS total FROM server"
+        : "SELECT COUNT(id) AS total FROM server WHERE name LIKE ?";
     const parameters = search === "" ? [] : [`%${search}%`];
 
     return new Promise((resolve, reject) => {
@@ -97,10 +98,10 @@ export function countTotal(db: sqlite3.Database, keyWord: string): Promise<numbe
     });
 }
 
-export function findByPort(db: sqlite3.Database, port: number): Promise<ServerEntity | null> {
+export async function findByPort(db: sqlite3.Database, port: number): Promise<ServerEntity | null> {
     return new Promise((resolve, reject) => {
         db.get<ServerRow>(
-            "SELECT * FROM servers WHERE port = ?",
+            "SELECT * FROM server WHERE port = ?",
             [port],
             (err, row) => {
                 if (err) {
@@ -123,10 +124,10 @@ export function findByPort(db: sqlite3.Database, port: number): Promise<ServerEn
     });
 }
 
-export function findByPath(db: sqlite3.Database, path: string): Promise<ServerEntity | null> {
+export async function findByPath(db: sqlite3.Database, path: string): Promise<ServerEntity | null> {
     return new Promise((resolve, reject) => {
         db.get<ServerRow>(
-            "SELECT * FROM servers WHERE path = ?",
+            "SELECT * FROM server WHERE path = ?",
             [path],
             (err, row) => {
                 if (err) {
@@ -149,10 +150,10 @@ export function findByPath(db: sqlite3.Database, path: string): Promise<ServerEn
     });
 }
 
-export function deleteByID(db: sqlite3.Database, id: number): Promise<void> {
+export async function deleteByID(db: sqlite3.Database, id: number): Promise<void> {
     return new Promise((resolve, reject) => {
         db.run(
-            "DELETE FROM servers WHERE id = ?",
+            "DELETE FROM server WHERE id = ?",
             [id],
             (err) => {
                 if (err) {
@@ -166,10 +167,10 @@ export function deleteByID(db: sqlite3.Database, id: number): Promise<void> {
     });
 }
 
-export function findServerPathByID(db: sqlite3.Database, id: number): Promise<string | null> {
+export async function findByID(db: sqlite3.Database, id: number): Promise<ServerEntity | null> {
     return new Promise((resolve, reject) => {
         db.get<ServerRow>(
-            "SELECT * FROM servers WHERE id = ?",
+            "SELECT * FROM server WHERE id = ?",
             [id],
             (err, row) => {
                 if (err) {
@@ -182,7 +183,11 @@ export function findServerPathByID(db: sqlite3.Database, id: number): Promise<st
                     return;
                 }
 
-                resolve(row.path);
+                resolve({
+                    ...row,
+                    offlineMode: Boolean(row.offlineMode),
+                    stats: "RUNNING"
+                });
             },
         );
     });

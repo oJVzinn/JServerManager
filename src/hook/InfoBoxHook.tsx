@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type {InfoBoxEntity} from "../entity/InfoBoxEntity.ts";
 
 export function useInfoBox(duration = 3000) {
     const [infoBox, setInfoBox] = useState<InfoBoxEntity | null>(null);
 
-    function sendInfoBox(newInfoBox: InfoBoxEntity) {
+    const sendInfoBox = useCallback((newInfoBox: InfoBoxEntity) => {
         setInfoBox(newInfoBox);
-    }
+    }, []);
 
     function clearInfoBox() {
         setInfoBox(null);

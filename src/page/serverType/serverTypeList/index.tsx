@@ -1,11 +1,11 @@
 import styles from "./ServerList.module.css"
 import {useEffect, useState} from "react";
 import type {Dispatch, SetStateAction} from "react";
-import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
-import ServerListHeader from "../serverListHeader";
-import ServerListFooter from "../serverListFooter";
-import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
-import ServerListItem from "../serverListItem";
+import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
+import type {ServerEntity} from "../../../entity/ServerEntity.ts";
+import ServerTypeListHeader from "../serverTypeListHeader";
+import ServerTypeListFooter from "../serverTypeListFooter";
+import ServerTypeListItem from "../serverTypeListItem";
 
 type Props = {
     keyWord: string,
@@ -18,7 +18,7 @@ type Props = {
     reloadKey: number;
 }
 
-export default function ServerList({keyWord, setLoading, sendInfoBox, setServers, servers, serversSelected, setServersSelected, reloadKey}: Props) {
+export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setServers, servers, serversSelected, setServersSelected, reloadKey}: Props) {
     const pageSize = 11;
 
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -84,7 +84,7 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
                     <col className={styles.buttonColumn}/>
                 </colgroup>
 
-                <ServerListHeader allSelect={allSelect} setAllSelect={setAllSelect}/>
+                <ServerTypeListHeader allSelect={allSelect} setAllSelect={setAllSelect}/>
 
                 <tbody>
                 {
@@ -99,12 +99,12 @@ export default function ServerList({keyWord, setLoading, sendInfoBox, setServers
                                 selected: serversSelected.includes(value.id)
                             }
 
-                            return <ServerListItem serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id} setServersSelected={setServersSelected}/>
+                            return <ServerTypeListItem serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id} setServersSelected={setServersSelected}/>
                         }))
                 }
                 </tbody>
 
-                <ServerListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize}/>
+                <ServerTypeListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize}/>
             </table>
         </div>
     )

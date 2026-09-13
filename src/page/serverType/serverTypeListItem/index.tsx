@@ -1,23 +1,23 @@
 import styles from "./ServerListItem.module.css"
-import serverListStyles from "../serverList/ServerList.module.css"
-import type {ServerEntity} from "../../../../entity/ServerEntity.ts";
+import serverListStyles from "../serverTypeList/ServerList.module.css"
 import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
-import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
+import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
+import type {ServerEntity} from "../../../entity/ServerEntity.ts";
 
-type ServerItemList = ServerEntity & {
+type ServerTypeItemList = ServerEntity & {
     position: number
     selected: boolean
 }
 
 type props = {
-    serverItemList: ServerItemList;
+    serverItemList: ServerTypeItemList;
     setServersSelected: Dispatch<SetStateAction<Array<number>>>;
     sendInfoBox: (infoBox: InfoBoxEntity) => void
     processDeleteServer: (serverId: number) => void
 }
 
-export default function ServerListItem( {serverItemList, sendInfoBox, processDeleteServer, setServersSelected}: props ) {
-    const [serverItem, setServerItem] = useState<ServerItemList>(serverItemList)
+export default function ServerTypeListItem( {serverItemList, sendInfoBox, processDeleteServer, setServersSelected}: props ) {
+    const [serverItem, setServerItem] = useState<ServerTypeItemList>(serverItemList)
     async function processDelete() {
         try {
             await window.electronAPI.processServerDeleteByID(serverItemList.id)
@@ -59,8 +59,8 @@ export default function ServerListItem( {serverItemList, sendInfoBox, processDel
              }}/>
         </td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.id}</td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.name.toUpperCase()}</td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.serverTypeName.toUpperCase()}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.name}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.serverTypeName}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.stats}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.port}</td>
         <td className={styles.buttonCell}>

@@ -5,19 +5,13 @@ import {
     countTotal,
     findByPort,
     findByPath,
-    deleteByID,
-    findServerPathByID
 } from "../../database/repositories/ServerRepository.js"
 import { ServerEntity } from "../../entity/ServerEntity.js";
-import { processCreateServer } from "../../services/serverService.js"
+import {processCreateServer, processDeleteServerByID} from "../../services/serverService.js"
 
 export default function init() {
     ipcMain.handle("server:list", async (_event, params: {maxServers: number, page: number, keyWord: string})=> {
         return list(getDatabase(), params.maxServers, params.page, params.keyWord)
-    })
-
-    ipcMain.handle("server:deleteByID", async (_event, id: number)=> {
-        return deleteByID(getDatabase(), id)
     })
 
     ipcMain.handle("server:count", async (_event, keyWord: string) => {
@@ -36,7 +30,8 @@ export default function init() {
         return processCreateServer(server)
     })
 
-    ipcMain.handle("server:findServerPathByID", async (_event, serverID: number) => {
-        return findServerPathByID(getDatabase(), serverID)
+    ipcMain.handle("server:processServerDeleteByID", async (_event, id: number) => {
+        return processDeleteServerByID(id)
     })
+
 }

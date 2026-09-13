@@ -1,8 +1,8 @@
 import styles from "./CreateForm.module.css"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
-import Info from "../../../../component/info";
-import {useInfoBox} from "../../../../hook/InfoBoxHook.tsx";
+import type {ServerTypeEntity} from "../../../../entity/ServerTypeEntity.ts";
+import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
 
 type ServerCreateInfo = {
     name: string;
@@ -14,12 +14,14 @@ type ServerCreateInfo = {
 
 type Props = {
     setLoading: (isLoading: boolean) => void;
+    sendInfoBox: (infoBox: InfoBoxEntity) => void;
 }
 
-export default function CreateForm( {setLoading}: Props ) {
+export default function CreateForm( {setLoading, sendInfoBox}: Props ) {
     const navigate = useNavigate();
     const [folderPath, setFolderPath] = useState("");
-    const { infoBox, sendInfoBox } = useInfoBox();
+    const [serversType, setServersType] = useState<Array<ServerTypeEntity>>([])
+
     const [serverCreateInfo, setServerCreateInfo] = useState<ServerCreateInfo>({
         name: "",
         port: 25565,
@@ -56,14 +58,21 @@ export default function CreateForm( {setLoading}: Props ) {
             return
         }
 
+        const serverTypeID = findServerTypeIDByName(serverCreateInfo.serverType)
+        if (serverTypeID === undefined) {
+            sendInfoBox({title: "ERRO", description: "Ocorreu um erro interno ao processar o tipo de servidor", type: "error"})
+            return
+        }
+
         setLoading(true)
 
         window.electronAPI.processServerCreate({
             id: 0,
-            name: serverCreateInfo.name,
+            name: serverCreateInfo.name.toUpperCase(),
             offlineMode: serverCreateInfo.onlineMode,
             port: serverCreateInfo.port,
-            type: serverCreateInfo.serverType,
+            serverTypeID: serverTypeID,
+            serverTypeName: "",
             path: serverCreateInfo.serverPath,
             stats: ""
         }).then(()=> {
@@ -80,15 +89,37 @@ export default function CreateForm( {setLoading}: Props ) {
         })
     }
 
+    function findServerTypeIDByName(serverTypeName: string): number | undefined {
+        return serversType.find(serverType => serverType.name.toUpperCase() === serverTypeName.toUpperCase())?.id
+    }
+
+    useEffect(() => {
+        setLoading(true)
+
+        window.electronAPI.listServerType(20, 1, "").then((result: Array<ServerTypeEntity>)=> {
+            setServersType(result)
+        }).catch(reason => {
+            console.log(reason)
+            const description = reason instanceof Error
+                ? reason.message
+                : typeof reason === "string"
+                    ? reason
+                    : JSON.stringify(reason) ?? String(reason)
+            sendInfoBox({title: "ERRO", description, type: "error"})
+        }).finally(()=> {
+            setLoading(false)
+        })
+    }, [sendInfoBox, setLoading])
+
     return (
         <div className={styles.CreateForm}>
-            {infoBox !== null && <Info typeInfo={infoBox.type} title={infoBox.title} description={infoBox.description}/>}
+
             <span className={styles.title}>CRIAR UM NOVO SERVIDOR</span>
             <form className={styles.form}>
                 <div className={styles.field}>
                     <span className={styles.titleField}>Nome do servidor</span>
-                    <input className={styles.inputField} onChange={async (event) => {
-                        const name = event.currentTarget.value.trim();
+                    <input className={styles.inputField} value={serverCreateInfo.name} onChange={async (event) => {
+                        const name = event.currentTarget.value.toUpperCase().trim();
                         const basePath = await window.electronAPI.findDefaultFolderByService("ServerConfig");
                         const finalPath = basePath ? `${basePath}/${name.trim()}` : "";
 
@@ -122,8 +153,15 @@ export default function CreateForm( {setLoading}: Props ) {
                             serverType,
                         }));
                     }}>
-                        <option value="PROXY" className={styles.option}>PROXY</option>
-                        <option value="BUKKIT" className={styles.option}>BUKKIT</option>
+                        {
+                            serversType.map((serverType) => {
+                                return <option value={serverType.name.toUpperCase()}
+                                               className={styles.option}
+                                               key={serverType.id}>
+                                    {serverType.name.toUpperCase()}
+                                </option>
+                            })
+                        }
                     </select>
                 </div>
 

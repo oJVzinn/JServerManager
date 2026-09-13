@@ -1,0 +1,71 @@
+.ServerList {
+    width: calc(100% - 10%);
+    padding-inline: 5%;
+    margin-block: 40px;
+}
+
+.serverTable {
+    background-color: var(--color-bg-secondary);
+    width: 100%;
+    padding: 0 10px;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-radius: 10px;
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+.checkboxColumn {
+    width: 5%;
+}
+
+.idColumn {
+    width: 5%;
+}
+
+.buttonColumn {
+    width: 50px;
+}
+
+.tableCell {
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.checkbox {
+    appearance: none;
+    position: relative;
+    align-self: flex-start;
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+    line-height: 21px;
+    border-radius: 5px;
+    background: var(--color-bg-primary);
+    cursor: pointer;
+    margin: 0;
+}
+
+.checkbox:hover {
+    transform: scale(1.15);
+    transition: 0.2s ease;
+}
+
+.checkbox:checked:hover {
+    background-color: var(--color-positive-hover);
+}
+
+.checkbox:checked {
+    background: var(--color-positive);
+}
+
+.checkbox:checked::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--color-text);
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
+}

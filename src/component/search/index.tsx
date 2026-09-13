@@ -1,11 +1,11 @@
-import styles from "./ServerSearch.module.css"
+import styles from "./Search.module.css"
 
 type Props = {
     keyWord: string;
     setKeyWord: (value: string) => void
 }
 
-export default function ServerSearch( {keyWord, setKeyWord}: Props ) {
+export default function Search( {keyWord, setKeyWord}: Props ) {
     function updateKeyword() {
         const input = document.getElementById("keywordSearch") as HTMLInputElement | null;
         setKeyWord(input?.value ?? "")

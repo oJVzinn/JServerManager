@@ -1,4 +1,5 @@
 import type {ServerEntity} from "../entity/ServerEntity.ts";
+import type {ServerTypeEntity} from "../entity/ServerTypeEntity.ts";
 
 export {};
 
@@ -17,15 +18,15 @@ declare global {
 
             findServerByPath: (serverPath: string) => Promise<ServerEntity | null>
 
-            deleteServerByID: (id: number) => Promise<void>
-
             deleteFolderByPath: (path: string) => Promise<void>
 
             findDefaultFolderByService: (service: string) => Promise<string | null>
 
+            listServerType: (maxServersType: number, page: number, keyWord: string) => Promise<Array<ServerTypeEntity>>
+
             processServerCreate: (server: ServerEntity) => Promise<void>
 
-            findServerPathByID: (id: number) => Promise<string | null>
+            processServerDeleteByID: (id: number) => Promise<void>
 
             selectFolder: () => Promise<{
                 name: string;

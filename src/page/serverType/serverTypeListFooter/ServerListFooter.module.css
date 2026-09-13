@@ -1,0 +1,49 @@
+.footerPagination {
+    display: flex;
+    padding: 15px;
+    justify-content: center;
+    gap: 15px;
+}
+
+.buttonPagination {
+    background-color: var(--color-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    margin: 0;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
+}
+
+.paginationImg {
+    width: 25px;
+    height: 25px;
+}
+
+.paginationList {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+}
+
+.buttonPagination:hover {
+    cursor: pointer;
+}
+
+.activePage {
+    background-color: var(--color-positive);
+    color: var(--color-positive-text);
+    cursor: default;
+}
+
+.activePage:hover {
+    cursor: default;
+}

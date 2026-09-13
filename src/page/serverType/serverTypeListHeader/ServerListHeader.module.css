@@ -1,0 +1,6 @@
+.columnTitle {
+    font-size: var(--font-size-subtitle);
+    font-weight: bold;
+    color: var(--color-text);
+    padding: 15px 0;
+}

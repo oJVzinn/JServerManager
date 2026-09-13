@@ -16,7 +16,7 @@ export default function Header() {
                     </li>
 
                     <li>
-                        <Link to="/" className={styles.item}><span>Tipos</span></Link>
+                        <Link to="/serverType" className={styles.item}><span>Tipos</span></Link>
                     </li>
 
                     <li>

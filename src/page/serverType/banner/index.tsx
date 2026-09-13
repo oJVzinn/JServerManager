@@ -1,7 +1,7 @@
 import styles from "./Banner.module.css"
-import ServerActionButtons from "../serverActionsButton";
-import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
-import Search from "../../../../component/search";
+import ServerActionButtons from "../serverTypeActionsButton";
+import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
+import Search from "../../../component/search";
 
 type Props = {
     serversSelected: Array<number>;

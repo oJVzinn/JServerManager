@@ -1,6 +1,6 @@
 import styles from "./ServerActionButton.module.css"
 import {useNavigate} from "react-router";
-import type {InfoBoxEntity} from "../../../../entity/InfoBoxEntity.ts";
+import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
 
 type Props = {
     serversSelected: Array<number>
@@ -51,13 +51,6 @@ export default function ServerActionButtons({serversSelected, sendInfoBox, setLo
                     navigate("/serverCreate")
                 }}>
                     <img alt="addImage" src="./assets/add.svg" className={styles.actionImg}/>
-                </button>
-            </li>
-            <li>
-                <button className={`${styles.actionButton} ${styles.updateBg}`} onClick={() => {
-
-                }}>
-                    <img alt="updateImage" src="./assets/settings.svg" className={styles.actionImg}/>
                 </button>
             </li>
             {
