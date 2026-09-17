@@ -14,6 +14,8 @@ declare global {
 
             countServers: (keyWord: string) => Promise<number>
 
+            countServerType: (keyWord: string) => Promise<number>
+
             findServerByPort: (port: number) => Promise<ServerEntity | null>
 
             findServerByPath: (serverPath: string) => Promise<ServerEntity | null>

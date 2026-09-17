@@ -4,29 +4,29 @@ import {useInfoBox} from "../../hook/InfoBoxHook.tsx";
 import Banner from "./banner";
 import Info from "../../component/info";
 import Loading from "../../component/loading";
-import type {ServerEntity} from "../../entity/ServerEntity.ts";
 import ServerTypeList from "./serverTypeList";
+import type {ServerTypeEntity} from "../../entity/ServerTypeEntity.ts";
 
 export default function ServerType() {
     const [keyWord, setKetWord] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
     const {infoBox, sendInfoBox} = useInfoBox();
-    const [servers, setServers] = useState<Array<ServerEntity> | null>(null)
-    const [serversSelected, setServersSelected] = useState<Array<number>>([])
-    const [serversReloadKey, setServersReloadKey] = useState(0)
+    const [serverTypes, setServerTypes] = useState<Array<ServerTypeEntity> | null>(null)
+    const [serverTypeSelected, setServerTypeSelected] = useState<Array<number>>([])
+    const [reloadedKey, setReloadedKey] = useState(0)
 
     return (
         <>
             {infoBox !== null && <Info typeInfo={infoBox.type} title={infoBox.title} description={infoBox.description}/>}
             <Loading loading={loading}>
                 <Header/>
-                <Banner sendInfoBox={sendInfoBox} setLoading={setLoading} keyWord={keyWord} setKeyWord={setKetWord} serversSelected={serversSelected} onServersDeleted={() => {
-                    setServersSelected([])
-                    setServersReloadKey((current) => current + 1)
+                <Banner sendInfoBox={sendInfoBox} setLoading={setLoading} keyWord={keyWord} setKeyWord={setKetWord} serverTypeSelected={serverTypeSelected} onServersDeleted={() => {
+                    setServerTypeSelected([])
+                    setReloadedKey((current) => current + 1)
                 }}/>
-                <ServerTypeList keyWord={keyWord} setLoading={setLoading} reloadKey={serversReloadKey} serversSelected={serversSelected}
-                            sendInfoBox={sendInfoBox} setServers={setServers}
-                            servers={servers} setServersSelected={setServersSelected}
+                <ServerTypeList keyWord={keyWord} setLoading={setLoading} reloadKey={reloadedKey} serverTypeSelected={serverTypeSelected}
+                            sendInfoBox={sendInfoBox} setServerTypes={setServerTypes}
+                            serverTypes={serverTypes} setServerTypesSelected={setServerTypeSelected}
                 />
             </Loading>
         </>

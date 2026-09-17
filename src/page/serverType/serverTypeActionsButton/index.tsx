@@ -3,20 +3,20 @@ import {useNavigate} from "react-router";
 import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
 
 type Props = {
-    serversSelected: Array<number>
+    serverTypeSelected: Array<number>
     sendInfoBox: (infoBox: InfoBoxEntity) => void
     setLoading: (loading: boolean) => void
     onServersDeleted: () => void
 }
 
-export default function ServerActionButtons({serversSelected, sendInfoBox, setLoading, onServersDeleted}: Props) {
+export default function ServerActionButtons({serverTypeSelected, sendInfoBox, setLoading, onServersDeleted}: Props) {
     const navigate = useNavigate();
 
     async function processDelete() {
         setLoading(true);
 
         try {
-            serversSelected.map(async (serverID) => {
+            serverTypeSelected.map(async (serverID) => {
                 await window.electronAPI.processServerDeleteByID(serverID)
             })
 
@@ -54,7 +54,7 @@ export default function ServerActionButtons({serversSelected, sendInfoBox, setLo
                 </button>
             </li>
             {
-                serversSelected.length > 0 && <li>
+                serverTypeSelected.length > 0 && <li>
                     <button className={`${styles.actionButton} ${styles.deleteBg}`} onClick={processDelete}>
                         <img alt="deleteImage" src="./assets/delete.svg" className={styles.actionImg}/>
                     </button>

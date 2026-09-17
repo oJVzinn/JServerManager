@@ -2,27 +2,27 @@ import styles from "./ServerListItem.module.css"
 import serverListStyles from "../serverTypeList/ServerList.module.css"
 import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
 import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
-import type {ServerEntity} from "../../../entity/ServerEntity.ts";
+import type {ServerTypeEntity} from "../../../entity/ServerTypeEntity.ts";
 
-type ServerTypeItemList = ServerEntity & {
+type ServerTypeItemList = ServerTypeEntity & {
     position: number
     selected: boolean
 }
 
 type props = {
-    serverItemList: ServerTypeItemList;
-    setServersSelected: Dispatch<SetStateAction<Array<number>>>;
+    serverTypeItemList: ServerTypeItemList;
+    setServerTypesSelected: Dispatch<SetStateAction<Array<number>>>;
     sendInfoBox: (infoBox: InfoBoxEntity) => void
     processDeleteServer: (serverId: number) => void
 }
 
-export default function ServerTypeListItem( {serverItemList, sendInfoBox, processDeleteServer, setServersSelected}: props ) {
-    const [serverItem, setServerItem] = useState<ServerTypeItemList>(serverItemList)
+export default function ServerTypeListItem( {serverTypeItemList, sendInfoBox, processDeleteServer, setServerTypesSelected}: props ) {
+    const [serverTypeItem, setServerTypeItem] = useState<ServerTypeItemList>(serverTypeItemList)
     async function processDelete() {
         try {
-            await window.electronAPI.processServerDeleteByID(serverItemList.id)
-            processDeleteServer(serverItemList.id)
-            sendInfoBox({title: "SUCESSO", description: `Servidor ${serverItem.id} excluido com sucesso`, type: "sucess"})
+            await window.electronAPI.processServerDeleteByID(serverTypeItem.id)
+            processDeleteServer(serverTypeItem.id)
+            sendInfoBox({title: "SUCESSO", description: `Servidor ${serverTypeItem.id} excluido com sucesso`, type: "sucess"})
         } catch (reason) {
             const description = reason instanceof Error
                 ? reason.message
@@ -35,34 +35,32 @@ export default function ServerTypeListItem( {serverItemList, sendInfoBox, proces
     }
 
     useEffect(() => {
-        setServerItem((current) => ({
+        setServerTypeItem((current) => ({
             ...current,
-            selected: serverItemList.selected
+            selected: serverTypeItem.selected
         }))
 
-        setServersSelected((current) => serverItemList.selected
-            ? current.includes(serverItemList.id) ? current : [...current, serverItemList.id]
-            : current.filter((id) => id !== serverItemList.id))
-    }, [serverItemList.id, serverItemList.selected, setServersSelected]);
+        setServerTypesSelected((current) => serverTypeItem.selected
+            ? current.includes(serverTypeItem.id) ? current : [...current, serverTypeItem.id]
+            : current.filter((id) => id !== serverTypeItem.id))
+    }, [serverTypeItem.id, serverTypeItem.selected, setServerTypesSelected]);
 
-    return <tr className={(serverItem.position % 2 == 0 ? styles.tableBackgroundPrimary : styles.tableBackgroundSecondary) }>
+    return <tr className={(serverTypeItem.position % 2 == 0 ? styles.tableBackgroundPrimary : styles.tableBackgroundSecondary) }>
         <td className={`${styles.tableCell}`}>
-            <input type={"checkbox"} className={serverListStyles.checkbox} checked={serverItem.selected} onChange={(event)=> {
-                 const checked = event.currentTarget.checked
-                 setServerItem((current)=> ({
-                     ...current,
-                     selected: checked
-                 }))
-                 setServersSelected((current) => checked
-                     ? current.includes(serverItem.id) ? current : [...current, serverItem.id]
-                     : current.filter((id) => id !== serverItem.id))
+            <input type={"checkbox"} className={serverListStyles.checkbox} checked={serverTypeItem.selected} onChange={(event)=> {
+                const checked = event.currentTarget.checked
+                setServerTypeItem((current)=> ({
+                    ...current,
+                    selected: checked
+                }))
+                setServerTypesSelected((current) => checked
+                    ? current.includes(serverTypeItem.id) ? current : [...current, serverTypeItem.id]
+                    : current.filter((id) => id !== serverTypeItem.id))
              }}/>
         </td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.id}</td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.name}</td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.serverTypeName}</td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.stats}</td>
-        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverItem.port}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverTypeItem.id}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverTypeItem.name}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{String(serverTypeItem.autoAcceptEula).toUpperCase()}</td>
         <td className={styles.buttonCell}>
             <button className={styles.actionButton}><img className={styles.buttonIcon} alt="Editar servidor" src="./assets/edit.svg"/></button>
         </td>

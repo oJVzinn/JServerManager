@@ -4,3 +4,8 @@
     color: var(--color-text);
     padding: 15px 0;
 }
+
+.columnActions {
+    width: 50px;
+    padding: 15px 0;
+}

@@ -16,11 +16,9 @@ export default function ServerTypeListHeader( {allSelect, setAllSelect}: Props) 
             }}/></th>
             <th className={styles.columnTitle}>ID</th>
             <th className={`${styles.columnTitle}`}>NOME</th>
-            <th className={`${styles.columnTitle}`}>TIPO</th>
-            <th className={`${styles.columnTitle}`}>STATUS</th>
-            <th className={`${styles.columnTitle}`}>PORTA</th>
-            <th aria-label="Editar"/>
-            <th aria-label="Excluir"/>
+            <th className={`${styles.columnTitle}`}>EULA AUTOMATICO</th>
+            <th aria-label="Editar" className={styles.columnActions}/>
+            <th aria-label="Excluir" className={styles.columnActions}/>
         </tr>
         </thead>
     )

@@ -2,13 +2,13 @@ import styles from "./ServerListFooter.module.css";
 
 type Props = {
     currentPage: number;
-    totalServers: number;
+    totalServerType: number;
     pageSize: number;
     setCurrentPage: (currentPage: number) => void
 }
 
-export default function ServerTypeListFooter( {currentPage, totalServers, pageSize, setCurrentPage}: Props ) {
-    const totalPages = Math.max(1, Math.ceil(totalServers / pageSize));
+export default function ServerTypeListFooter( {currentPage, totalServerType, pageSize, setCurrentPage}: Props ) {
+    const totalPages = Math.max(1, Math.ceil(totalServerType / pageSize));
     const paginationStart = Math.floor((currentPage - 1) / 3) * 3 + 1;
     const paginationEnd = Math.min(paginationStart + 2, totalPages);
 

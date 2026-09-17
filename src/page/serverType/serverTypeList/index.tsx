@@ -2,48 +2,48 @@ import styles from "./ServerList.module.css"
 import {useEffect, useState} from "react";
 import type {Dispatch, SetStateAction} from "react";
 import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
-import type {ServerEntity} from "../../../entity/ServerEntity.ts";
 import ServerTypeListHeader from "../serverTypeListHeader";
 import ServerTypeListFooter from "../serverTypeListFooter";
 import ServerTypeListItem from "../serverTypeListItem";
+import type {ServerTypeEntity} from "../../../entity/ServerTypeEntity.ts";
 
 type Props = {
     keyWord: string,
     setLoading: (isLoading: boolean) => void;
     sendInfoBox: (infoBox: InfoBoxEntity) => void;
-    servers: Array<ServerEntity> | null;
-    serversSelected: Array<number>;
-    setServersSelected: Dispatch<SetStateAction<Array<number>>>;
-    setServers: Dispatch<SetStateAction<Array<ServerEntity> | null>>;
+    serverTypes: Array<ServerTypeEntity> | null;
+    serverTypeSelected: Array<number>;
+    setServerTypesSelected: Dispatch<SetStateAction<Array<number>>>;
+    setServerTypes: Dispatch<SetStateAction<Array<ServerTypeEntity> | null>>;
     reloadKey: number;
 }
 
-export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setServers, servers, serversSelected, setServersSelected, reloadKey}: Props) {
+export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setServerTypes, serverTypes, serverTypeSelected, setServerTypesSelected, reloadKey}: Props) {
     const pageSize = 11;
 
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [totalServers, setTotalServer] = useState<number>(0)
+    const [totalServerType, setTotalServerType] = useState<number>(0)
 
-    const allSelect = servers !== null
-        && servers.length > 0
-        && servers.every((server) => serversSelected.includes(server.id))
+    const allSelect = serverTypes !== null
+        && serverTypes.length > 0
+        && serverTypes.every((serverType) => serverTypeSelected.includes(serverType.id))
 
     function setAllSelect(checked: boolean) {
-        if (servers === null) return
+        if (serverTypes === null) return
 
-        const pageServerIds = servers.map((server) => server.id)
+        const pageServerTypeIds = serverTypes.map((server) => server.id)
 
-        setServersSelected((current) => checked
-            ? [...new Set([...current, ...pageServerIds])]
-            : current.filter((serverId) => !pageServerIds.includes(serverId)))
+        setServerTypesSelected((current) => checked
+            ? [...new Set([...current, ...pageServerTypeIds])]
+            : current.filter((serverTypeId) => !pageServerTypeIds.includes(serverTypeId)))
     }
 
     function processDeleteServer(serverId: number) {
-        if (servers !== null) {
-            setServers(current => current === null
+        if (serverTypes !== null) {
+            setServerTypes(current => current === null
                 ? null
                 : current.filter(server => server.id !== serverId))
-            setTotalServer(current => Math.max(0, current - 1))
+            setTotalServerType(current => Math.max(0, current - 1))
         }
     }
 
@@ -51,10 +51,10 @@ export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setSer
         setLoading(true);
 
         Promise.all([
-            window.electronAPI.countServers(keyWord),
-            window.electronAPI.listServers(pageSize, currentPage, keyWord),
-        ]).then(([total, servers]) => {
-            setTotalServer(total);
+            window.electronAPI.countServerType(keyWord),
+            window.electronAPI.listServerType(pageSize, currentPage, keyWord),
+        ]).then(([total, serverTypes]) => {
+            setTotalServerType(total);
 
             const lastPage = Math.max(1, Math.ceil(total / pageSize));
             if (currentPage > lastPage) {
@@ -62,9 +62,10 @@ export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setSer
                 return;
             }
 
-            setServers(servers);
+            setServerTypes(serverTypes);
         }).catch((error) => {
-            console.error("Não foi possível carregar os servidores", error);
+            sendInfoBox({type: "error", description: "Não foi possível carregar os servidores", title: "ERRO"})
+            console.error(error)
         }).finally(() => {
             setLoading(false);
         });
@@ -88,23 +89,23 @@ export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setSer
 
                 <tbody>
                 {
-                    servers !== null && (servers.length === 0 ?
+                    serverTypes !== null && (serverTypes.length === 0 ?
                         <tr>
                             <td colSpan={8}>Nenhum item encontrado...</td>
                         </tr> :
-                        servers.map((value, index) => {
+                        serverTypes.map((value, index) => {
                             const finalServerItem = {
                                 ...value,
                                 position: index,
-                                selected: serversSelected.includes(value.id)
+                                selected: serverTypeSelected.includes(value.id)
                             }
 
-                            return <ServerTypeListItem serverItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id} setServersSelected={setServersSelected}/>
+                            return <ServerTypeListItem serverTypeItemList={finalServerItem} sendInfoBox={sendInfoBox} processDeleteServer={processDeleteServer} key={value.id} setServerTypesSelected={setServerTypesSelected}/>
                         }))
                 }
                 </tbody>
 
-                <ServerTypeListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServers={totalServers} pageSize={pageSize}/>
+                <ServerTypeListFooter setCurrentPage={setCurrentPage} currentPage={currentPage} totalServerType={totalServerType} pageSize={pageSize}/>
             </table>
         </div>
     )

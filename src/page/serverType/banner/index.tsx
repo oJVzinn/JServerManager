@@ -4,7 +4,7 @@ import type {InfoBoxEntity} from "../../../entity/InfoBoxEntity.ts";
 import Search from "../../../component/search";
 
 type Props = {
-    serversSelected: Array<number>;
+    serverTypeSelected: Array<number>;
     keyWord: string;
     setKeyWord: (value: string) => void
     setLoading: (loading: boolean)=> void
@@ -12,10 +12,10 @@ type Props = {
     onServersDeleted: () => void
 }
 
-export default function Banner( {serversSelected, keyWord, setKeyWord, sendInfoBox, setLoading, onServersDeleted}: Props ) {
+export default function Banner( {serverTypeSelected, keyWord, setKeyWord, sendInfoBox, setLoading, onServersDeleted}: Props ) {
     return (
         <div className={styles.Banner}>
-            <ServerActionButtons serversSelected={serversSelected} sendInfoBox={sendInfoBox} setLoading={setLoading} onServersDeleted={onServersDeleted}/>
+            <ServerActionButtons serverTypeSelected={serverTypeSelected} sendInfoBox={sendInfoBox} setLoading={setLoading} onServersDeleted={onServersDeleted}/>
             <Search keyWord={keyWord} setKeyWord={setKeyWord}/>
         </div>
     )

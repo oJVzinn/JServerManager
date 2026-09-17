@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
     processServerCreate: (server: ServerEntity) => ipcRenderer.invoke("server:processServerCreate", server),
     processServerDeleteByID: (id: number) => ipcRenderer.invoke("server:processServerDeleteByID", id),
 
+    countServerType: (keyWord: string) => ipcRenderer.invoke("serverType:count", keyWord),
     listServerType: (maxServersType: number, page: number, keyWord: string) => ipcRenderer.invoke("serverType:list", {maxServersType, page, keyWord}),
 
     findDefaultFolderByService: (service: string) => ipcRenderer.invoke("folder:defaultByService", service),
