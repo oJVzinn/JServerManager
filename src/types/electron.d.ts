@@ -26,7 +26,11 @@ declare global {
 
             listServerType: (maxServersType: number, page: number, keyWord: string) => Promise<Array<ServerTypeEntity>>
 
+            findServerTypeByName: (name: string) => Promise<ServerTypeEntity | null>
+
             processServerCreate: (server: ServerEntity) => Promise<void>
+
+            processServerTypeCreate: (server: ServerTypeEntity) => Promise<void>
 
             processServerDeleteByID: (id: number) => Promise<void>
 

@@ -1,12 +1,11 @@
-import {ServerEntity} from "../entity/ServerEntity.js";
-import {createServer, deleteByID, findByID} from "../database/repositories/ServerRepository.js"
 import { getDatabase } from "../database/database.js";
 import { mkdir } from "node:fs/promises";
-import {deletePath} from "./folderService.js";
+import {ServerTypeEntity} from "../entity/ServerTypeEntity.js";
+import {createServerType} from "../database/repositories/ServerTypeRepository.js";
 
-export async function processCreateServer(server: ServerEntity) {
+export async function processCreateServer(server: ServerTypeEntity) {
     try {
-        await createServer(getDatabase(), server);
+        await createServerType(getDatabase(), server);
     } catch {
         throw new Error("Erro ao inserir o valor no database");
     }
@@ -19,7 +18,7 @@ export async function processCreateServer(server: ServerEntity) {
     }
 }
 
-export async function processDeleteServerByID(id: number): Promise<void> {
+/*export async function processDeleteServerByID(id: number): Promise<void> {
     const db = getDatabase();
     const serverEntity = await findByID(db, id)
 
@@ -27,4 +26,4 @@ export async function processDeleteServerByID(id: number): Promise<void> {
 
     await deletePath(serverEntity.path)
     await deleteByID(getDatabase(), id)
-}
+}*/

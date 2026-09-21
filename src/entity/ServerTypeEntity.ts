@@ -1,7 +1,8 @@
 export type ServerTypeEntity = {
     id: number;
     name: string;
-    jarPath: string;
+    path: string;
+    jarFile: string;
     onlineModeKey: string;
     onlineModeFile: string;
     serverPortKey: string;

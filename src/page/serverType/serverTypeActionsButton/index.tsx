@@ -48,7 +48,7 @@ export default function ServerActionButtons({serverTypeSelected, sendInfoBox, se
         <ul className={styles.ServerActionButtons}>
             <li>
                 <button className={`${styles.actionButton} ${styles.createBg}`} onClick={() => {
-                    navigate("/serverCreate")
+                    navigate("/serverTypeCreate")
                 }}>
                     <img alt="addImage" src="./assets/add.svg" className={styles.actionImg}/>
                 </button>

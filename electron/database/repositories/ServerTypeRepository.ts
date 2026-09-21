@@ -12,7 +12,8 @@ export function createServerTypeTable(db: sqlite3.Database): Promise<void> {
         (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT UNIQUE NOT NULL,
-            jarPath TEXT NOT NULL,
+            path TEXT NOT NULL,
+            jarFile TEXT NOT NULL,
             onlineModeKey TEXT NOT NULL,
             onlineModeFile TEXT NOT NULL,
             serverPortKey TEXT NOT NULL,
@@ -32,8 +33,8 @@ export function createServerTypeTable(db: sqlite3.Database): Promise<void> {
 
 export async function createServerType(db: sqlite3.Database, serverType: ServerTypeEntity) {
     await new Promise<void>((resolve, reject) => {
-        db.run("INSERT INTO serverType(name, jarPath, onlineModeKey, onlineModeFile, serverPortKey, serverPortFile, autoAcceptEula) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [serverType.name, serverType.jarPath, serverType.onlineModeKey, serverType.onlineModeFile, serverType.serverPortKey, serverType.serverPortFile, serverType.autoAcceptEula],
+        db.run("INSERT INTO serverType(name, path, jarFile, onlineModeKey, onlineModeFile, serverPortKey, serverPortFile, autoAcceptEula) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [serverType.name, serverType.path, serverType.jarFile, serverType.onlineModeKey, serverType.onlineModeFile, serverType.serverPortKey, serverType.serverPortFile, serverType.autoAcceptEula],
             (err) => {
                 if (err) {
                     reject(err);
@@ -98,11 +99,11 @@ export function countTotal(db: sqlite3.Database, keyWord: string): Promise<numbe
     });
 }
 
-export function findByJarPath(db: sqlite3.Database, path: string): Promise<ServerTypeEntity | null> {
+export function findByName(db: sqlite3.Database, name: string): Promise<ServerTypeEntity | null> {
     return new Promise((resolve, reject) => {
         db.get<ServerTypeRow>(
-            "SELECT * FROM serverType WHERE path = ?",
-            [path],
+            "SELECT * FROM serverType WHERE name = ?",
+            [name],
             (err, row) => {
                 if (err) {
                     reject(err);
