@@ -80,7 +80,6 @@ export default function ServerTypeList({keyWord, setLoading, sendInfoBox, setSer
                     <col/>
                     <col/>
                     <col/>
-                    <col/>
                     <col className={styles.buttonColumn}/>
                     <col className={styles.buttonColumn}/>
                 </colgroup>

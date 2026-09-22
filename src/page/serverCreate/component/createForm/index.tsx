@@ -27,7 +27,7 @@ export default function CreateForm( {setLoading, sendInfoBox}: Props ) {
         port: 25565,
         onlineMode: true,
         serverPath: "",
-        serverType: "BUKKIT"
+        serverType: ""
     })
 
     async function handleFolderSelection() {
@@ -90,6 +90,7 @@ export default function CreateForm( {setLoading, sendInfoBox}: Props ) {
     }
 
     function findServerTypeIDByName(serverTypeName: string): number | undefined {
+        console.log(`${serverTypeName} | ${serversType}`)
         return serversType.find(serverType => serverType.name.toUpperCase() === serverTypeName.toUpperCase())?.id
     }
 
@@ -97,6 +98,15 @@ export default function CreateForm( {setLoading, sendInfoBox}: Props ) {
         setLoading(true)
 
         window.electronAPI.listServerType(20, 1, "").then((result: Array<ServerTypeEntity>)=> {
+            if (result.length > 0) {
+                let serverType = result[0].name
+                if (serverCreateInfo.serverType === "") {
+                    setServerCreateInfo((current) => ({
+                        ...current,
+                        serverType,
+                    }));
+                }
+            }
             setServersType(result)
         }).catch(reason => {
             console.log(reason)

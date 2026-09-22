@@ -25,7 +25,7 @@ export default function ServerTypeListFooter( {currentPage, totalServerType, pag
     return (
         <tfoot>
         <tr>
-            <td colSpan={8}>
+            <td colSpan={7}>
                 <div className={styles.footerPagination}>
                     {
                         currentPage !== 1 &&

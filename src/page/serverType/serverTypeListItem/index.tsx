@@ -61,8 +61,11 @@ export default function ServerTypeListItem( {serverTypeItemList, sendInfoBox, pr
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverTypeItem.id}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverTypeItem.name}</td>
         <td className={`${styles.tableCell} ${styles.columDesc}`}>{String(serverTypeItem.autoAcceptEula).toUpperCase()}</td>
+        <td className={`${styles.tableCell} ${styles.columDesc}`}>{serverTypeItem.path}</td>
         <td className={styles.buttonCell}>
-            <button className={styles.actionButton}><img className={styles.buttonIcon} alt="Editar servidor" src="./assets/edit.svg"/></button>
+            <button className={styles.actionButton}>
+                <img className={styles.buttonIcon} alt="Editar servidor" src="./assets/edit.svg"/>
+            </button>
         </td>
         <td className={styles.buttonCell}>
             <button className={styles.actionButton} onClick={processDelete}>
