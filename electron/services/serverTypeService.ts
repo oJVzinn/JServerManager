@@ -1,7 +1,7 @@
 import { getDatabase } from "../database/database.js";
 import { mkdir } from "node:fs/promises";
 import {ServerTypeEntity} from "../entity/ServerTypeEntity.js";
-import {createServerType} from "../database/repositories/ServerTypeRepository.js";
+import {countTotal, createServerType, findByName, list} from "../database/repositories/ServerTypeRepository.js";
 
 export async function processCreateServer(server: ServerTypeEntity) {
     try {
@@ -27,3 +27,15 @@ export async function processCreateServer(server: ServerTypeEntity) {
     await deletePath(serverEntity.path)
     await deleteByID(getDatabase(), id)
 }*/
+
+export async function listServersType(maxServersType: number, page: number, keyWord: string) {
+    return list(getDatabase(), maxServersType, page, keyWord)
+}
+
+export async function countServersType(keyWord: string) {
+    return countTotal(getDatabase(), keyWord)
+}
+
+export async function findServerTypeByName(name: string) {
+    return findByName(getDatabase(), name)
+}

@@ -1,8 +1,16 @@
 import {ServerEntity} from "../entity/ServerEntity.js";
-import {createServer, deleteByID, findByID} from "../database/repositories/ServerRepository.js"
+import {
+    createServer,
+    deleteByID,
+    findByID,
+    findByPath,
+    findByPort,
+    list
+} from "../database/repositories/ServerRepository.js"
 import { getDatabase } from "../database/database.js";
 import { mkdir } from "node:fs/promises";
 import {deletePath} from "./folderService.js";
+import {countTotal} from "../database/repositories/ServerTypeRepository.js";
 
 export async function processCreateServer(server: ServerEntity) {
     try {
@@ -27,4 +35,20 @@ export async function processDeleteServerByID(id: number): Promise<void> {
 
     await deletePath(serverEntity.path)
     await deleteByID(getDatabase(), id)
+}
+
+export async function listServers(maxServers: number, page: number, keyWord: string) {
+    return list(getDatabase(), maxServers, page, keyWord)
+}
+
+export async function countServers(keyWord: string) {
+    return countTotal(getDatabase(), keyWord)
+}
+
+export async function findServerByPort(port: number) {
+    return findByPort(getDatabase(), port)
+}
+
+export async function findServerByPath(path: string) {
+    return findByPath(getDatabase(), path)
 }

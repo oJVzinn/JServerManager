@@ -1,7 +1,7 @@
 import {app, dialog} from "electron";
 import path from "node:path";
 import { mkdir, rm } from "node:fs/promises";
-import { list, insertServices } from "../database/repositories/FolderRepository.js"
+import {list, insertServices, findByService} from "../database/repositories/FolderRepository.js"
 import { getDatabase } from "../database/database.js";
 import type { ServiceConfigEntity } from "../entity/ServiceConfigEntity.js"
 
@@ -42,4 +42,8 @@ async function setupDefaultConfigs() {
     await mkdir(databasePath, { recursive: true });
 
     await insertServices(getDatabase(), [serverConfig, databaseConfig])
+}
+
+export async function findDefaultFolderByService(service: string) {
+    return findByService(getDatabase(), service)
 }

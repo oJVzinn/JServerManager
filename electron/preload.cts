@@ -18,5 +18,4 @@ contextBridge.exposeInMainWorld("electronAPI", {
     findDefaultFolderByService: (service: string) => ipcRenderer.invoke("folder:defaultByService", service),
     selectFolder: () => ipcRenderer.invoke("folder:select"),
     deleteFolderByPath: (path: string) => ipcRenderer.invoke("folder:deleteByPath", path)
-
 });

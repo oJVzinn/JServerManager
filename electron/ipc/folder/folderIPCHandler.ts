@@ -1,7 +1,5 @@
 import { ipcMain } from "electron";
-import {deletePath, openSelectFolderOnCreation} from "../../services/folderService.js"
-import { getDatabase } from "../../database/database.js";
-import { findByService } from "../../database/repositories/FolderRepository.js"
+import {deletePath, findDefaultFolderByService, openSelectFolderOnCreation} from "../../services/folderService.js"
 
 export default function init() {
     ipcMain.handle("folder:select", async () => {
@@ -9,7 +7,7 @@ export default function init() {
     })
 
     ipcMain.handle("folder:defaultByService", async (_event, service: string) => {
-        return findByService(getDatabase(), service)
+        return findDefaultFolderByService(service)
     })
 
     ipcMain.handle("folder:deleteByPath", async (_event, path: string) => {
